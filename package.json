@@ -1,0 +1,35 @@
+{
+  "name": "TotoReactExpenses",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "art": "^0.10.3",
+    "d3": "^5.9.2",
+    "moment": "^2.24.0",
+    "react": "16.8.3",
+    "react-native": "0.59.2",
+    "react-native-gesture-handler": "^1.1.0",
+    "react-native-google-signin": "^1.2.2",
+    "react-native-swiper": "^1.5.14",
+    "react-navigation": "^3.5.1",
+    "toto-react-components": "^1.18.3"
+  },
+  "devDependencies": {
+    "@babel/core": "7.4.0",
+    "@babel/runtime": "7.4.2",
+    "@react-native-community/eslint-config": "0.0.3",
+    "babel-jest": "24.5.0",
+    "eslint": "5.16.0",
+    "jest": "24.5.0",
+    "metro-react-native-babel-preset": "0.53.1",
+    "react-test-renderer": "16.8.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
