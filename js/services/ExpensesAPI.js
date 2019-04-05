@@ -7,6 +7,16 @@ import moment from 'moment';
 export default class ExpensesAPI {
 
   /**
+   * Retrieves the month's expenses
+   */
+  getExpenses(yearMonth) {
+
+    return new TotoAPI().fetch('/expenses/expenses?yearMonth=' + yearMonth + '&sortDate=true&sortDesc=true')
+        .then((response) => response.json());
+
+  }
+
+  /**
    * Posts an expense
    */
   postExpense(ex) {

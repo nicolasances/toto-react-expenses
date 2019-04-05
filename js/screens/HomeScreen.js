@@ -73,7 +73,9 @@ export default class HomeScreen extends Component<Props> {
         </View>
 
         <View style={styles.area2}>
-          <View style={{}}><TRC.TotoIconButton image={require('TotoReactExpenses/img/add.png')} size='xl' label='New expense' onPress={() => {this.props.navigation.navigate('NewExpenseScreen')}}/></View>
+          <View style={styles.buttonContainer}><TRC.TotoIconButton image={require('TotoReactExpenses/img/stats.png')} /></View>
+          <View style={styles.buttonContainer}><TRC.TotoIconButton image={require('TotoReactExpenses/img/add.png')} size='xl' label='New expense' onPress={() => {this.props.navigation.navigate('NewExpenseScreen')}}/></View>
+          <View style={styles.buttonContainer}><TRC.TotoIconButton image={require('TotoReactExpenses/img/list.png')} onPress={() => {this.props.navigation.navigate('ExpensesListScreen')}}/></View>
         </View>
 
         <View style={styles.area3}>
@@ -103,7 +105,13 @@ const styles = StyleSheet.create({
     marginVertical: 24,
   },
   area2: {
+    flexDirection: 'row',
     marginVertical: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    marginHorizontal: 6,
   },
   area3: {
     marginTop: 24,
