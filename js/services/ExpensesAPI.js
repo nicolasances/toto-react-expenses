@@ -7,6 +7,22 @@ import moment from 'moment';
 export default class ExpensesAPI {
 
   /**
+   * Posts an expense
+   */
+  postExpense(ex) {
+
+    // Post the data
+    return new TotoAPI().fetch('/expenses/expenses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ex)
+    }).then((response => response.json()));
+
+  }
+
+  /**
    * Retrieves the month total spending
    * - yearMonth : the ym to consider
    */
@@ -58,23 +74,6 @@ export default class ExpensesAPI {
 
     return new TotoAPI().fetch('/expenses/stats/topCategoriesPerMonth?yearMonthGte=' + yearMonthGte)
         .then((response) => response.json());
-
-  }
-
-  /**
-   * Create a new plan
-   * Requires the plan to be a {name, start, weeks}
-   */
-  postPlan(plan) {
-
-    // Post the data
-    return new TotoAPI().fetch('/training/plan/plans', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(plan)
-    }).then((response => response.json()));
 
   }
 

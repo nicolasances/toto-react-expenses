@@ -23,7 +23,25 @@ export default class LastDaysSpendingGraph extends Component {
     // Binding
     this.prepareChartData = this.prepareChartData.bind(this);
     this.valueLabel = this.valueLabel.bind(this);
+    this.onExpenseCreated = this.onExpenseCreated.bind(this);
   }
+
+  /**
+   * When the component mount
+   */
+  componentDidMount() {
+    // Add event listeners
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+
+  }
+
+  componentWillUnmount() {
+    // REmove event listeners
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+  }
+
+  // React to events
+  onExpenseCreated(event) {this.loadPastDaysSpending();}
 
   /**
    * Loads the last x days of spending (just the totals)

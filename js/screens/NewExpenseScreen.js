@@ -8,6 +8,7 @@ import DateSelector from 'TotoReactExpenses/js/comp/DateSelector';
 import CurrencySelector from 'TotoReactExpenses/js/comp/CurrencySelector';
 import AmountSelector from 'TotoReactExpenses/js/comp/AmountSelector';
 import CategorySelector from 'TotoReactExpenses/js/comp/CategorySelector';
+import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 
 export default class NewExpenseScreen extends Component<Props> {
 
@@ -42,6 +43,7 @@ export default class NewExpenseScreen extends Component<Props> {
     this.setCurrency = this.setCurrency.bind(this);
     this.setAmount = this.setAmount.bind(this);
     this.setCategory = this.setCategory.bind(this);
+    this.saveExpense = this.saveExpense.bind(this);
 
   }
 
@@ -57,6 +59,35 @@ export default class NewExpenseScreen extends Component<Props> {
   componentWillUnmount() {
     // REmove event listeners
     // TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.sessionDeleted, this.onSessionDeleted);
+  }
+
+  /**
+   * Save th expense
+   */
+  saveExpense() {
+
+    let expense = {
+      amount: this.state.amount,
+      date: this.state.date,
+      category: this.state.category,
+      description: this.state.description,
+      yearMonth: this.state.date.substring(0, 6),
+      consolidated: false,
+      currency: this.state.currency
+    }
+
+    new ExpensesAPI().postExpense(expense).then((data) => {
+
+      expense.id = data.id;
+
+      // Publish an event
+      TRC.TotoEventBus.bus.publishEvent({name: config.EVENTS.expenseCreated, context: {expense: expense}});
+
+      // Return back
+      this.props.navigation.goBack();
+
+    })
+
   }
 
   /**
@@ -144,6 +175,7 @@ export default class NewExpenseScreen extends Component<Props> {
         <View style={styles.line4}>
           <TRC.TotoIconButton
             image={require('TotoReactExpenses/img/tick.png')}
+            onPress={this.saveExpense}
             />
         </View>
 

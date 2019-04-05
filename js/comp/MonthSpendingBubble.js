@@ -28,7 +28,25 @@ class MonthSpendingBubble extends Component {
 
     // Bindings
     this.animate = this.animate.bind(this);
+    this.onExpenseCreated = this.onExpenseCreated.bind(this);
   }
+
+  /**
+   * When the component mount
+   */
+  componentDidMount() {
+    // Add event listeners
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+
+  }
+
+  componentWillUnmount() {
+    // REmove event listeners
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+  }
+
+  // React to events
+  onExpenseCreated(event) {this.loadSpending();}
 
   /**
    * Loads the current month spending

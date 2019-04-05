@@ -24,7 +24,25 @@ export default class MonthSpendingCategoriesGraph extends Component {
     this.loadSpendingCategories = this.loadSpendingCategories.bind(this);
     this.valueLabel = this.valueLabel.bind(this);
     this.categoryImgLoader = this.categoryImgLoader.bind(this);
+    this.onExpenseCreated = this.onExpenseCreated.bind(this);
   }
+
+  /**
+   * When the component mount
+   */
+  componentDidMount() {
+    // Add event listeners
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+
+  }
+
+  componentWillUnmount() {
+    // REmove event listeners
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+  }
+
+  // React to events
+  onExpenseCreated(event) {this.loadSpendingCategories();}
 
   /**
    * Loads the last x days of spending (just the totals)

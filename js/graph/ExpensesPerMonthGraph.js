@@ -25,7 +25,25 @@ export default class ExpensesPerMonthGraph extends Component {
     this.prepareData = this.prepareData.bind(this);
     this.loadExpenses = this.loadExpenses.bind(this);
     this.xAxisTransform = this.xAxisTransform.bind(this);
+    this.onExpenseCreated = this.onExpenseCreated.bind(this);
   }
+
+  /**
+   * When the component mount
+   */
+  componentDidMount() {
+    // Add event listeners
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+
+  }
+
+  componentWillUnmount() {
+    // REmove event listeners
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+  }
+
+  // React to events
+  onExpenseCreated(event) {this.loadExpenses();}
 
   /**
    * Loads the last x days of spending (just the totals)
@@ -116,6 +134,7 @@ export default class ExpensesPerMonthGraph extends Component {
 
     // Add only one month out of three
     let label;
+    if (this.lastMonthLabeled != null && value == 0) this.lastMonthLabeled = null;
     if (this.lastMonthLabeled == null && value > 0) label = parsedMonth.format('MMM YY');
     else if (parsedMonth.diff(this.lastMonthLabeled, 'M') > 2) label = parsedMonth.format('MMM YY');
 
