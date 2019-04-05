@@ -26,6 +26,7 @@ const d3 = {scale, shape, array, path};
  *                              }, {...} ]
  * - valueLabelTransform    : (optional) a function (value) => {transforms the value to be displayed on the bar (top part)}
  * - xAxisTransform         : (optional) a function to be called with the x axis value to generate a label to put on the bar (bottom part)
+ * - moreSpaceForXLabels    : (optional, default false) pass true if the x axis label needs extra space (e.g. ends up in two lines)
  * - showValuePoints        : (optional, default true), shows the value points (circles)
  * - valuePointsBackground  : (optional, default THEME color), defines the background color of the value points (Circles)
  * - valuePointsSize        : (optional, default 6), defines the radius of the circle value points
@@ -92,16 +93,20 @@ export default class TotoLineChart extends Component {
 
     if (this.props.data == null || this.props.data.length == 0) return;
 
+    // SIZES AND Padding of elements
+    this.xLabelSize = 12;
+    this.xLabelBottomPadding = 6;
+
+    if (this.props.moreSpaceForXLabels) this.xLabelSize += 12
+
     // Define the vertical and horizontal margins of the graph, in order to fit the circles
     let paddingV = 0, paddingH = 0;
     if (this.showValuePoints) {
       paddingV = this.valuePointsSize / 2 + 2 * this.genericShapeStrokeWidth;
       paddingH = this.valuePointsSize + 2 * this.genericShapeStrokeWidth;
     }
-
-    // SIZES AND Padding of elements
-    this.xLabelSize = 24;
-    this.xLabelBottomPadding = 6;
+    // Add the padding due to the labels
+    if (this.props.xAxisTransform) paddingV += this.xLabelBottomPadding + this.xLabelSize;
 
     // Define the min and max x values
     let xMin = d3.array.min(this.props.data, (d) => {return d.x});

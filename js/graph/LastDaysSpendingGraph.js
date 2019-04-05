@@ -24,6 +24,7 @@ export default class LastDaysSpendingGraph extends Component {
     this.prepareChartData = this.prepareChartData.bind(this);
     this.valueLabel = this.valueLabel.bind(this);
     this.onExpenseCreated = this.onExpenseCreated.bind(this);
+    this.xAxisTransform = this.xAxisTransform.bind(this);
   }
 
   /**
@@ -132,6 +133,18 @@ export default class LastDaysSpendingGraph extends Component {
   }
 
   /**
+   * Get the x axis label
+   */
+  xAxisTransform(value) {
+
+    if (this.state.days == null) return;
+    if (this.state.days.length <= value) return;
+
+    return moment(this.state.days[value].date, 'YYYYMMDD').format('dd');
+
+  }
+
+  /**
    * Render the comp
    */
   render() {
@@ -144,6 +157,7 @@ export default class LastDaysSpendingGraph extends Component {
           curveCardinal={false}
           showValuePoints={true}
           leaveMargins={false}
+          xAxisTransform={this.xAxisTransform}
           />
       </View>
     )

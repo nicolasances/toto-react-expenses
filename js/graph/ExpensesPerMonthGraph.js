@@ -158,6 +158,7 @@ export default class ExpensesPerMonthGraph extends Component {
           leaveMargins={false}
           yLines={this.state.yLines}
           xAxisTransform={this.xAxisTransform}
+          moreSpaceForXLabels={true}
           />
       </View>
     )
