@@ -106,7 +106,7 @@ export default class TotoLineChart extends Component {
       paddingH = this.valuePointsSize + 2 * this.genericShapeStrokeWidth;
     }
     // Add the padding due to the labels
-    if (this.props.xAxisTransform) paddingV += this.xLabelBottomPadding + this.xLabelSize;
+    if (this.props.xAxisTransform) paddingV += 2 * this.xLabelBottomPadding + this.xLabelSize; // 2* to leave some space between the label and the graph
 
     // Define the min and max x values
     let xMin = d3.array.min(this.props.data, (d) => {return d.x});
