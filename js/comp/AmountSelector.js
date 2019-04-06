@@ -19,6 +19,7 @@ export default class CurrencySelector extends Component {
           onChangeText={(text) => {this.props.onAmountChange(parseFloat(text))}}
           keyboardType='numeric'
           placeholder='100'
+          defaultValue={this.props.amount ? this.props.amount + '' : ''}
           placeholderTextColor={TRC.TotoTheme.theme.COLOR_THEME_LIGHT}
           />
 

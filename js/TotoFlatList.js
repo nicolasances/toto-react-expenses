@@ -9,20 +9,23 @@ import moment from 'moment';
  * To use this you must provide:
  *  - data                  : the dataset as an [] of objects
  *  - dataExtractor()       : a function that takes the flat list item and extract the following data structure:
- *                            { title :   the title, main text, of this item,
- *                              avatar :  an object describing the avatar:
- *                                      { type: 'number, image'
- *                                        value: (optional) 'a value, in case of type number, an image in case of type image'
- *                                        unit: (optional) 'the unit, in case of type number'
- *                                       }
- *                              sign :    an image to put as a "sign" (e.g. info sign to show that this item has info attached)
- *                                        should be a loaded image, (provided as require(..), so already loaded)
- *                              leftSideValue : a value to put on the left side of the title, after the avatar (e.g. the date of an expense)
- *                                               should be an object
- *                                               { type: 'date'
- *                                                 value: the value. If 'date' => 'YYYYMMDD'
- *                                               }
- *                              rightSideValue : a formatted value to put on the right-most side of the line (e.g. amount in an expenses list)
+ *                            { title :          the title, main text, of this item,
+ *                              avatar :         an object describing the avatar:
+ *                                              { type: 'number, image'
+ *                                                value: (optional) 'a value, in case of type number, an image in case of type image'
+ *                                                unit: (optional) 'the unit, in case of type number'
+ *                                              }
+ *                              sign :          an image to put as a "sign" (e.g. info sign to show that this item has info attached)
+ *                                              should be a loaded image, (provided as require(..), so already loaded)
+ *                              signSize :      (optional, default 'm'), size of the sign. Could be 'm' (default), 'l', 'xl'
+ *                              onSignClick:    an action to be performed when clicking on the sign
+ *                                              must be a function(item)
+ *                              leftSideValue:  a value to put on the left side of the title, after the avatar (e.g. the date of an expense)
+ *                                              should be an object
+ *                                              { type: 'date'
+ *                                                value: the value. If 'date' => 'YYYYMMDD'
+ *                                              }
+ *                              rightSideValue: a formatted value to put on the right-most side of the line (e.g. amount in an expenses list)
  *                            }
  *  - onItemPress()         : a function to be called when the item is pressed
  *  - avatarImageLoader()   : a function(item) that will have to load the avatar image and return a loaded <Image />
@@ -78,8 +81,9 @@ class Item extends Component {
    * React to a data change
    */
   onDataChanged(event) {
-    if (this.state.item.id == event.context.item.id)
-      this.setState(event.context.item);
+    if (this.state.item.id == event.context.item.id) {
+      this.setState(event.context);
+    }
   }
 
   render() {
@@ -120,11 +124,20 @@ class Item extends Component {
     // If there is a sign
     let sign;
 
-    if (data.sign) sign = (
-      <View style={styles.signContainer}>
-        <Image source={data.sign} style={styles.sign} />
-      </View>
-    )
+    if (data.sign) {
+      let signSizeStyle = data.signSize == 'xl' ? {width: 30, height: 30} : data.signSize == 'xl' ? {width: 24, height: 24} : {width: 18, height: 18};
+
+      if (data.onSignClick) sign = (
+        <TouchableOpacity style={styles.signContainer} onPress={() => {data.onSignClick(this.state)}}>
+          <Image source={data.sign} style={[styles.sign, signSizeStyle]} />
+        </TouchableOpacity>
+      )
+      else sign = (
+        <View style={styles.signContainer}>
+          <Image source={data.sign} style={[styles.sign, signSizeStyle]} />
+        </View>
+      )
+    }
 
     // Left side value
     let leftSideValue;
@@ -138,7 +151,7 @@ class Item extends Component {
     }
 
     return (
-      <TouchableOpacity style={styles.item} onPress={() => {if (this.props.onItemPress) this.props.onItemPress(this.props.item)}}>
+      <TouchableOpacity style={styles.item} onPress={() => {if (this.props.onItemPress) this.props.onItemPress(this.state)}}>
 
         <View style={styles.avatar}>
           {avatar}
@@ -150,11 +163,11 @@ class Item extends Component {
           <Text style={{color: TRC.TotoTheme.theme.COLOR_TEXT}}>{data.title}</Text>
         </View>
 
-        {sign}
-
         <View style={styles.rightSideValueContainer}>
           <Text style={styles.rightSideValue}>{data.rightSideValue}</Text>
         </View>
+
+        {sign}
 
       </TouchableOpacity>
     )
@@ -206,8 +219,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   sign: {
-    width: 18,
-    height: 18,
     tintColor: TRC.TotoTheme.theme.COLOR_ACCENT_LIGHT
   },
   leftSideValueContainer: {

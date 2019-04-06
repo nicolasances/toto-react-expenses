@@ -8,6 +8,8 @@ import categoriesMap from 'TotoReactExpenses/js/util/CategoriesMap';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoFlatList from 'TotoReactExpenses/js/TotoFlatList';
 
+const consolidateImg = require('TotoReactExpenses/img/consolidate.png');
+
 export default class ExpensesListScreen extends Component<Props> {
 
     // Define the Navigation options
@@ -39,6 +41,9 @@ export default class ExpensesListScreen extends Component<Props> {
 
     // Bindings
     this.loadExpenses = this.loadExpenses.bind(this);
+    this.dataExtractor = this.dataExtractor.bind(this);
+    this.onItemPress = this.onItemPress.bind(this);
+    this.onExpenseUpdated = this.onExpenseUpdated.bind(this);
 
   }
 
@@ -47,13 +52,22 @@ export default class ExpensesListScreen extends Component<Props> {
    */
   componentDidMount() {
     // Add event listeners
-    // TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.sessionDeleted, this.onSessionDeleted);
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseUpdated, this.onExpenseUpdated);
 
   }
 
   componentWillUnmount() {
     // REmove event listeners
-    // TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.sessionDeleted, this.onSessionDeleted);
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseUpdated, this.onExpenseUpdated);
+  }
+
+  /**
+   * Updates the expense
+   */
+  onExpenseUpdated(event) {
+
+    TRC.TotoEventBus.bus.publishEvent({name: 'totoListDataChanged', context: {item: event.context.expense}});
+
   }
 
   /**
@@ -66,6 +80,24 @@ export default class ExpensesListScreen extends Component<Props> {
       this.setState({expenses: null}, () => {this.setState({expenses: data.expenses})});
 
     });
+  }
+
+  /**
+   * Consolidate the expense
+   * The item is from the toto flat list
+   */
+  consolidateExpense(item) {
+
+    new ExpensesAPI().consolidateExpense(item.item.id).then((data) => {
+
+      if (data == null || data.code == '400') return;
+
+      item.item.consolidated = true;
+
+      TRC.TotoEventBus.bus.publishEvent({name: 'totoListDataChanged', context: {item: item.item}});
+
+    });
+
   }
 
   /**
@@ -93,10 +125,22 @@ export default class ExpensesListScreen extends Component<Props> {
       },
       leftSideValue: {
         type: 'date',
-        value: moment(ex.date).format('YYYYMMDD')
+        value: ex.date
       },
-      rightSideValue: amount
+      rightSideValue: amount,
+      sign: ex.consolidated ? null : consolidateImg,
+      signSize: 'xl',
+      onSignClick: ex.consolidated ? null : this.consolidateExpense
     }
+
+  }
+
+  /**
+   * Reacts to the pressing of a list item
+   */
+  onItemPress(item) {
+
+    this.props.navigation.navigate('ExpenseDetailScreen', {expense: item.item});
 
   }
 
@@ -111,6 +155,7 @@ export default class ExpensesListScreen extends Component<Props> {
         <TotoFlatList
           data={this.state.expenses}
           dataExtractor={this.dataExtractor}
+          onItemPress={this.onItemPress}
           />
 
       </View>

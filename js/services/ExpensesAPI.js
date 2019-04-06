@@ -33,6 +33,48 @@ export default class ExpensesAPI {
   }
 
   /**
+   * Deletes an expense
+   */
+  deleteExpense(exId) {
+
+    // Post the data
+    return new TotoAPI().fetch('/expenses/expenses/' + exId, {method: 'DELETE'}).then((response => response.json()));
+
+  }
+
+  /**
+   * Updates an expense
+   */
+  putExpense(exId, ex) {
+
+    // Post the data
+    return new TotoAPI().fetch('/expenses/expenses/' + exId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ex)
+    }).then((response => response.json()));
+
+  }
+
+  /**
+   * Marks an expense as conolidated
+   */
+  consolidateExpense(exId) {
+
+    // Post the data
+    return new TotoAPI().fetch('/expenses/expenses/' + exId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({consolidated: true})
+    }).then((response => response.json()));
+
+  }
+
+  /**
    * Retrieves the month total spending
    * - yearMonth : the ym to consider
    */

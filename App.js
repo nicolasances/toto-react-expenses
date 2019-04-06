@@ -8,6 +8,7 @@ import user from './js/User';
 import HomeScreen from './js/screens/HomeScreen';
 import NewExpenseScreen from './js/screens/NewExpenseScreen';
 import ExpensesListScreen from './js/screens/ExpensesListScreen';
+import ExpenseDetailScreen from './js/screens/ExpenseDetailScreen';
 
 // Client Id
 const clientId = '209706877536-ib0fd6co73jetqqjstq5tv9facsulf52.apps.googleusercontent.com';
@@ -20,6 +21,7 @@ const AppNavigator = createStackNavigator({
   HomeScreen: {screen: HomeScreen},
   NewExpenseScreen: {screen: NewExpenseScreen},
   ExpensesListScreen: {screen: ExpensesListScreen},
+  ExpenseDetailScreen: {screen: ExpenseDetailScreen},
 
 }, {
   initialRouteName: 'HomeScreen',
