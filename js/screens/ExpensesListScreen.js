@@ -7,6 +7,9 @@ import moment from 'moment';
 import categoriesMap from 'TotoReactExpenses/js/util/CategoriesMap';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoFlatList from 'TotoReactExpenses/js/TotoFlatList';
+import MonthNavigator from 'TotoReactExpenses/js/comp/MonthNavigator';
+
+const windowHeight = Dimensions.get('window').height;
 
 const consolidateImg = require('TotoReactExpenses/img/consolidate.png');
 
@@ -44,6 +47,7 @@ export default class ExpensesListScreen extends Component<Props> {
     this.dataExtractor = this.dataExtractor.bind(this);
     this.onItemPress = this.onItemPress.bind(this);
     this.onExpenseUpdated = this.onExpenseUpdated.bind(this);
+    this.onMonthChange = this.onMonthChange.bind(this);
 
   }
 
@@ -145,6 +149,15 @@ export default class ExpensesListScreen extends Component<Props> {
   }
 
   /**
+   * When a month gets changed
+   */
+  onMonthChange(yearMonth) {
+
+    this.setState({yearMonth: yearMonth}, this.loadExpenses);
+
+  }
+
+  /**
    * Renders the home screen
    */
   render() {
@@ -152,11 +165,16 @@ export default class ExpensesListScreen extends Component<Props> {
     return (
       <View style={styles.container}>
 
-        <TotoFlatList
+        <View style={{flex: 1}}>
+          <MonthNavigator startingMonth={this.state.yearMonth} onMonthChange={this.onMonthChange} />
+        </View>
+        <View style={{height: windowHeight - 150}}>
+          <TotoFlatList
           data={this.state.expenses}
           dataExtractor={this.dataExtractor}
           onItemPress={this.onItemPress}
           />
+        </View>
 
       </View>
     );

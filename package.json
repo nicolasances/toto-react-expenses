@@ -13,8 +13,10 @@
     "moment": "^2.24.0",
     "react": "16.8.3",
     "react-native": "0.59.2",
+    "react-native-coverflow": "^0.1.7",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-signin": "^1.2.2",
+    "react-native-snap-carousel": "^3.7.5",
     "react-native-swiper": "^1.5.14",
     "react-navigation": "^3.5.1",
     "toto-react-components": "^1.18.3"
