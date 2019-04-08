@@ -233,6 +233,7 @@ export default class MonthNavigator extends Component {
     // Non visible area <=> index is centerIdx - 2 or + 2
     // let opacity = (Math.abs(actualCenterIdx - index) >= 2) ? {opacity: 0} : {opacity: 1};
     let opacity = (index == actualCenterIdx) ? this.animatedOpacityStyle : {opacity: 0.5};
+    if (Math.abs(actualCenterIdx - index) >= 2) opacity = {opacity: 0};
 
     // Text Color: make it ACCENT if it's the currently selected month
     // let color = (index == actualCenterIdx) ? {color: TRC.TotoTheme.theme.COLOR_ACCENT} : {color: TRC.TotoTheme.theme.COLOR_TEXT};
@@ -267,7 +268,7 @@ export default class MonthNavigator extends Component {
         <View style={styles.monthsContainer}>
           {months}
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', flex: 1}}>
           <View style={{flex: 1}}></View>
           <View style={[{width: 80, height: 3}, styles.underlined]}></View>
           <View style={{flex: 1}}></View>
@@ -286,6 +287,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+    marginVertical: 24,
   },
   month: {
     width: windowWidth / 3,

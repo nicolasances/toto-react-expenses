@@ -9,6 +9,7 @@ import HomeScreen from './js/screens/HomeScreen';
 import NewExpenseScreen from './js/screens/NewExpenseScreen';
 import ExpensesListScreen from './js/screens/ExpensesListScreen';
 import ExpenseDetailScreen from './js/screens/ExpenseDetailScreen';
+import SettingsScreen from './js/screens/SettingsScreen';
 
 // Client Id
 const clientId = '209706877536-ib0fd6co73jetqqjstq5tv9facsulf52.apps.googleusercontent.com';
@@ -22,6 +23,7 @@ const AppNavigator = createStackNavigator({
   NewExpenseScreen: {screen: NewExpenseScreen},
   ExpensesListScreen: {screen: ExpensesListScreen},
   ExpenseDetailScreen: {screen: ExpenseDetailScreen},
+  SettingsScreen: {screen: SettingsScreen},
 
 }, {
   initialRouteName: 'HomeScreen',
@@ -45,6 +47,8 @@ export default class App extends Component {
 
     // Instantiate the sign in utility
     this.totoSignIn = new TRC.TotoSignIn(clientId);
+
+    // this.totoSignIn.signOut();
 
     // Init so that the signed in check is set as 'in progress'
     this.state = {
@@ -103,10 +107,8 @@ export default class App extends Component {
 
     this.totoSignIn.signIn().then((userInfo) => {
 
-      // console.log(userInfo);
-
       // Set the user
-      user.setUserInfo(userInfo);
+      user.setUserInfo(userInfo.user);
 
       // Update the state
       this.setState({

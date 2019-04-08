@@ -129,5 +129,31 @@ export default class ExpensesAPI {
 
   }
 
+  /**
+   * Retrieves the settings
+   */
+  getSettings(userEmail) {
+
+    return new TotoAPI().fetch('/expenses/settings?user=' + userEmail)
+        .then((response) => response.json());
+
+  }
+
+  /**
+   * Updates the settings
+   */
+  putSettings(settings) {
+
+    // Post the data
+    return new TotoAPI().fetch('/expenses/settings', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(settings)
+    }).then((response => response.json()));
+
+  }
+
 
 }

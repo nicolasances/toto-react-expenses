@@ -25,6 +25,10 @@ export default class HomeScreen extends Component<Props> {
                         title='Expenses'
                         color={TRC.TotoTheme.theme.COLOR_THEME}
                         titleColor={TRC.TotoTheme.theme.COLOR_TEXT}
+                        rightButton={{
+                          image: require('TotoReactExpenses/img/settings.png'),
+                          navData: {screen: 'SettingsScreen'}
+                        }}
                         />
       }
     }

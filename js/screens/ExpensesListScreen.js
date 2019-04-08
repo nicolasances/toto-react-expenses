@@ -168,7 +168,8 @@ export default class ExpensesListScreen extends Component<Props> {
         <View style={{flex: 1}}>
           <MonthNavigator startingMonth={this.state.yearMonth} onMonthChange={this.onMonthChange} />
         </View>
-        <View style={{height: windowHeight - 150}}>
+
+        <View style={{height: windowHeight - 170}}>
           <TotoFlatList
           data={this.state.expenses}
           dataExtractor={this.dataExtractor}
