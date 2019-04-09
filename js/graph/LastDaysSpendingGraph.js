@@ -6,6 +6,7 @@ import moment from 'moment';
 import * as config from 'TotoReactExpenses/js/Config';
 import TotoLineChart from 'TotoReactExpenses/js/TotoLineChart';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
+import user from 'TotoReactExpenses/js/User';
 
 export default class LastDaysSpendingGraph extends Component {
 
@@ -17,10 +18,11 @@ export default class LastDaysSpendingGraph extends Component {
       preparedData: []
     }
 
-    // Load past days expenses
-    this.loadPastDaysSpending();
+    // Load the data
+    this.load();
 
     // Binding
+    this.load = this.load.bind(this);
     this.prepareChartData = this.prepareChartData.bind(this);
     this.valueLabel = this.valueLabel.bind(this);
     this.onExpenseCreated = this.onExpenseCreated.bind(this);
@@ -33,12 +35,26 @@ export default class LastDaysSpendingGraph extends Component {
   componentDidMount() {
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
 
   }
 
   componentWillUnmount() {
     // REmove event listeners
     TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.settingsUpdated, this.load);
+  }
+
+  /**
+   * Load everything
+   */
+  load() {
+
+    new ExpensesAPI().getSettings(user.userInfo.email).then((data) => {
+      // Set the state
+      this.setState({settings: data}, this.loadPastDaysSpending);
+    })
+
   }
 
   // React to events
@@ -52,8 +68,9 @@ export default class LastDaysSpendingGraph extends Component {
     // Define how many days in the past
     let daysInPast = 8;
     let dateFrom = moment().subtract(daysInPast, 'days').format('YYYYMMDD');
+    let targetCurrency = this.state.settings ? this.state.settings.currency : null;
 
-    new ExpensesAPI().getExpensesPerDay(dateFrom).then((data) => {
+    new ExpensesAPI().getExpensesPerDay(dateFrom, null, targetCurrency).then((data) => {
 
       if (data == null || data.days == null) return;
 

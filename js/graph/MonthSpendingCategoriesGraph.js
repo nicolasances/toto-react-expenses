@@ -7,6 +7,7 @@ import * as config from 'TotoReactExpenses/js/Config';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoBarChart from 'TotoReactExpenses/js/TotoBarChart';
 import categoriesMap from 'TotoReactExpenses/js/util/CategoriesMap';
+import user from 'TotoReactExpenses/js/User';
 
 export default class MonthSpendingCategoriesGraph extends Component {
 
@@ -16,10 +17,10 @@ export default class MonthSpendingCategoriesGraph extends Component {
     this.state = {
     }
 
-    // Load past days expenses
-    this.loadSpendingCategories();
+    this.load();
 
     // Binding
+    this.load = this.load.bind(this);
     this.prepareData = this.prepareData.bind(this);
     this.loadSpendingCategories = this.loadSpendingCategories.bind(this);
     this.valueLabel = this.valueLabel.bind(this);
@@ -33,12 +34,25 @@ export default class MonthSpendingCategoriesGraph extends Component {
   componentDidMount() {
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
-
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
   }
 
   componentWillUnmount() {
     // REmove event listeners
     TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.settingsUpdated, this.load);
+  }
+
+  /**
+   * Load everything
+   */
+  load() {
+
+    new ExpensesAPI().getSettings(user.userInfo.email).then((data) => {
+      // Set state
+      this.setState({settings: data}, this.loadSpendingCategories);
+    })
+
   }
 
   // React to events
@@ -52,8 +66,9 @@ export default class MonthSpendingCategoriesGraph extends Component {
     // Define how many days in the past
     let maxCategories = 12;
     let yearMonth = moment().format('YYYYMM');
+    let targetCurrency = this.state.settings ? this.state.settings.currency : null;
 
-    new ExpensesAPI().getTopSpendingCategoriesOfMonth(yearMonth, maxCategories).then((data) => {
+    new ExpensesAPI().getTopSpendingCategoriesOfMonth(yearMonth, maxCategories, targetCurrency).then((data) => {
 
       if (data == null || data.categories == null) return;
 

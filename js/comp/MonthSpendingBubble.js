@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import * as config from 'TotoReactExpenses/js/Config';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
+import user from 'TotoReactExpenses/js/User';
 
 class MonthSpendingBubble extends Component {
 
@@ -15,7 +16,7 @@ class MonthSpendingBubble extends Component {
       yearMonth: moment().format('YYYYMM'),
       month: moment().format('MMM'),
       spending: 0,
-      animatedSpending: new Animated.Value(0)
+      animatedSpending: new Animated.Value(0),
     }
 
     // Animation control
@@ -23,10 +24,10 @@ class MonthSpendingBubble extends Component {
       this.setState({spending: progress.value});
     });
 
-    // Load current year month total
-    this.loadSpending();
+    this.load();
 
     // Bindings
+    this.load = this.load.bind(this);
     this.animate = this.animate.bind(this);
     this.onExpenseCreated = this.onExpenseCreated.bind(this);
   }
@@ -37,12 +38,25 @@ class MonthSpendingBubble extends Component {
   componentDidMount() {
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
 
   }
 
   componentWillUnmount() {
     // REmove event listeners
     TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.settingsUpdated, this.load);
+  }
+
+  /**
+   * Load everything
+   */
+  load() {
+
+    new ExpensesAPI().getSettings(user.userInfo.email).then((data) => {
+      this.setState({settings: data}, this.loadSpending);
+    })
+
   }
 
   // React to events
@@ -53,7 +67,9 @@ class MonthSpendingBubble extends Component {
    */
   loadSpending() {
 
-    new ExpensesAPI().getMonthTotalSpending(this.state.yearMonth).then((data) => {
+    let targetCurrency = this.state.settings ? this.state.settings.currency : null;
+
+    new ExpensesAPI().getMonthTotalSpending(this.state.yearMonth, targetCurrency).then((data) => {
 
       // Animate
       if (data != null && data.total != null) this.animate(data.total);
@@ -75,9 +91,16 @@ class MonthSpendingBubble extends Component {
   }
 
   render() {
+
+    // Define the currency
+    let currency = '€';
+    if (this.state.settings && this.state.settings.currency) {
+      if (this.state.settings.currency == 'DKK') currency = 'kr.';
+    }
+
     return (
       <View style={styles.container}>
-        <View style={styles.currencyContainer}><Text style={styles.currency}>€</Text></View>
+        <View style={styles.currencyContainer}><Text style={styles.currency}>{currency}</Text></View>
         <View style={styles.amountContainer}><Text style={styles.amount}>{this.state.spending.toFixed(0)}</Text></View>
         <View style={styles.monthContainer}><Text style={styles.month}>{this.state.month}</Text></View>
       </View>

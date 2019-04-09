@@ -9,6 +9,7 @@ const d3 = {array};
 import * as config from 'TotoReactExpenses/js/Config';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoLineChart from 'TotoReactExpenses/js/TotoLineChart';
+import user from 'TotoReactExpenses/js/User';
 
 export default class ExpensesPerMonthGraph extends Component {
 
@@ -18,10 +19,11 @@ export default class ExpensesPerMonthGraph extends Component {
     this.state = {
     }
 
-    // Load past days expenses
-    this.loadExpenses();
+    // Load
+    this.load();
 
     // Binding
+    this.load = this.load.bind(this);
     this.prepareData = this.prepareData.bind(this);
     this.loadExpenses = this.loadExpenses.bind(this);
     this.xAxisTransform = this.xAxisTransform.bind(this);
@@ -34,13 +36,28 @@ export default class ExpensesPerMonthGraph extends Component {
   componentDidMount() {
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
 
   }
 
   componentWillUnmount() {
     // REmove event listeners
     TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.settingsUpdated, this.load);
   }
+
+  /**
+   * Load everything
+   */
+  load() {
+
+    new ExpensesAPI().getSettings(user.userInfo.email).then((data) => {
+      // Set state
+      this.setState({settings: data}, this.loadExpenses);
+    })
+
+  }
+
 
   // React to events
   onExpenseCreated(event) {this.loadExpenses();}
@@ -53,8 +70,9 @@ export default class ExpensesPerMonthGraph extends Component {
     // Define how many days in the past
     let maxMonths = 40;
     let yearMonthFrom = moment().startOf('month').subtract(maxMonths - 1, 'months').format('YYYYMM');
+    let targetCurrency = this.state.settings ? this.state.settings.currency : null;
 
-    new ExpensesAPI().getExpensesPerMonth(yearMonthFrom).then((data) => {
+    new ExpensesAPI().getExpensesPerMonth(yearMonthFrom, targetCurrency).then((data) => {
 
       if (data == null || data.months == null) return;
 
