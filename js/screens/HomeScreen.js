@@ -25,10 +25,6 @@ export default class HomeScreen extends Component<Props> {
                         title='Expenses'
                         color={TRC.TotoTheme.theme.COLOR_THEME}
                         titleColor={TRC.TotoTheme.theme.COLOR_TEXT}
-                        rightButton={{
-                          image: require('TotoReactExpenses/img/settings.png'),
-                          navData: {screen: 'SettingsScreen'}
-                        }}
                         />
       }
     }
@@ -77,7 +73,7 @@ export default class HomeScreen extends Component<Props> {
         </View>
 
         <View style={styles.area2}>
-          <View style={styles.buttonContainer}><TRC.TotoIconButton image={require('TotoReactExpenses/img/stats.png')} /></View>
+          <View style={styles.buttonContainer}><TRC.TotoIconButton image={require('TotoReactExpenses/img/settings.png')} onPress={() => {this.props.navigation.navigate('SettingsScreen')}} /></View>
           <View style={styles.buttonContainer}><TRC.TotoIconButton image={require('TotoReactExpenses/img/add.png')} size='xl' label='New expense' onPress={() => {this.props.navigation.navigate('NewExpenseScreen')}}/></View>
           <View style={styles.buttonContainer}><TRC.TotoIconButton image={require('TotoReactExpenses/img/list.png')} onPress={() => {this.props.navigation.navigate('ExpensesListScreen')}}/></View>
         </View>
