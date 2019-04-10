@@ -24,8 +24,6 @@ class MonthSpendingBubble extends Component {
       this.setState({spending: progress.value});
     });
 
-    this.load();
-
     // Bindings
     this.load = this.load.bind(this);
     this.animate = this.animate.bind(this);
@@ -36,6 +34,9 @@ class MonthSpendingBubble extends Component {
    * When the component mount
    */
   componentDidMount() {
+
+    this.load();
+    
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
@@ -69,7 +70,7 @@ class MonthSpendingBubble extends Component {
 
     let targetCurrency = this.state.settings ? this.state.settings.currency : null;
 
-    new ExpensesAPI().getMonthTotalSpending(this.state.yearMonth, targetCurrency).then((data) => {
+    new ExpensesAPI().getMonthTotalSpending(user.userInfo.email, this.state.yearMonth, targetCurrency).then((data) => {
 
       // Animate
       if (data != null && data.total != null) this.animate(data.total);

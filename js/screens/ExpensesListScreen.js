@@ -8,6 +8,7 @@ import categoriesMap from 'TotoReactExpenses/js/util/CategoriesMap';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoFlatList from 'TotoReactExpenses/js/TotoFlatList';
 import MonthNavigator from 'TotoReactExpenses/js/comp/MonthNavigator';
+import user from 'TotoReactExpenses/js/User';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -39,9 +40,6 @@ export default class ExpensesListScreen extends Component<Props> {
       yearMonth: moment().format('YYYYMM'),
     }
 
-    // Loading expenses
-    this.loadExpenses();
-
     // Bindings
     this.loadExpenses = this.loadExpenses.bind(this);
     this.dataExtractor = this.dataExtractor.bind(this);
@@ -55,6 +53,10 @@ export default class ExpensesListScreen extends Component<Props> {
    * When the component mount
    */
   componentDidMount() {
+
+    // Loading expenses
+    this.loadExpenses();
+    
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseUpdated, this.onExpenseUpdated);
 
@@ -79,7 +81,7 @@ export default class ExpensesListScreen extends Component<Props> {
    */
   loadExpenses() {
 
-    new ExpensesAPI().getExpenses(this.state.yearMonth).then((data) => {
+    new ExpensesAPI().getExpenses(user.userInfo.email, this.state.yearMonth).then((data) => {
 
       this.setState({expenses: null}, () => {this.setState({expenses: data.expenses})});
 

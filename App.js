@@ -60,7 +60,7 @@ export default class App extends Component {
     this.onLogin = this.onLogin.bind(this);
     this.checkLoadedState = this.checkLoadedState.bind(this);
 
-    // Check if images are loaded
+    // Check if the user is loaded
     setTimeout(this.checkLoadedState, 100);
 
     // Check if the user is signed in already
@@ -76,6 +76,8 @@ export default class App extends Component {
           result().then((r) => {
             // Update the global user
             user.setUserInfo(r.user);
+            // Update the "loaded" state
+            this.checkLoadedState();
           });
         });
       }
@@ -96,7 +98,7 @@ export default class App extends Component {
   checkLoadedState() {
 
     this.setState({
-      isLoaded: true
+      isLoaded: user && user.userInfo
     })
   }
 
@@ -113,7 +115,7 @@ export default class App extends Component {
       // Update the state
       this.setState({
         isSignedIn: userInfo != null
-      })
+      }, this.checkLoadedState)
     });
   }
 

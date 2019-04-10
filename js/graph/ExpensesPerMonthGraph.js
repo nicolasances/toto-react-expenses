@@ -19,9 +19,6 @@ export default class ExpensesPerMonthGraph extends Component {
     this.state = {
     }
 
-    // Load
-    this.load();
-
     // Binding
     this.load = this.load.bind(this);
     this.prepareData = this.prepareData.bind(this);
@@ -34,6 +31,10 @@ export default class ExpensesPerMonthGraph extends Component {
    * When the component mount
    */
   componentDidMount() {
+
+    // Load
+    this.load();
+
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
@@ -72,7 +73,7 @@ export default class ExpensesPerMonthGraph extends Component {
     let yearMonthFrom = moment().startOf('month').subtract(maxMonths - 1, 'months').format('YYYYMM');
     let targetCurrency = this.state.settings ? this.state.settings.currency : null;
 
-    new ExpensesAPI().getExpensesPerMonth(yearMonthFrom, targetCurrency).then((data) => {
+    new ExpensesAPI().getExpensesPerMonth(user.userInfo.email, yearMonthFrom, targetCurrency).then((data) => {
 
       if (data == null || data.months == null) return;
 

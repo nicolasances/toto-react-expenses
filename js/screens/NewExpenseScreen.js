@@ -9,6 +9,7 @@ import CurrencySelector from 'TotoReactExpenses/js/comp/CurrencySelector';
 import AmountSelector from 'TotoReactExpenses/js/comp/AmountSelector';
 import CategorySelector from 'TotoReactExpenses/js/comp/CategorySelector';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
+import user from 'TotoReactExpenses/js/User';
 
 export default class NewExpenseScreen extends Component<Props> {
 
@@ -73,7 +74,8 @@ export default class NewExpenseScreen extends Component<Props> {
       description: this.state.description,
       yearMonth: this.state.date.substring(0, 6),
       consolidated: false,
-      currency: this.state.currency
+      currency: this.state.currency,
+      user: user.userInfo.email
     }
 
     new ExpensesAPI().postExpense(expense).then((data) => {

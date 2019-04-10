@@ -18,9 +18,6 @@ export default class LastDaysSpendingGraph extends Component {
       preparedData: []
     }
 
-    // Load the data
-    this.load();
-
     // Binding
     this.load = this.load.bind(this);
     this.prepareChartData = this.prepareChartData.bind(this);
@@ -33,6 +30,9 @@ export default class LastDaysSpendingGraph extends Component {
    * When the component mount
    */
   componentDidMount() {
+    // Load the data
+    this.load();
+
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
@@ -70,7 +70,7 @@ export default class LastDaysSpendingGraph extends Component {
     let dateFrom = moment().subtract(daysInPast, 'days').format('YYYYMMDD');
     let targetCurrency = this.state.settings ? this.state.settings.currency : null;
 
-    new ExpensesAPI().getExpensesPerDay(dateFrom, null, targetCurrency).then((data) => {
+    new ExpensesAPI().getExpensesPerDay(user.userInfo.email, dateFrom, null, targetCurrency).then((data) => {
 
       if (data == null || data.days == null) return;
 

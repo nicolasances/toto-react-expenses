@@ -10,9 +10,9 @@ export default class ExpensesAPI {
   /**
    * Retrieves the month's expenses
    */
-  getExpenses(yearMonth) {
+  getExpenses(userEmail, yearMonth) {
 
-    return new TotoAPI().fetch('/expenses/expenses?yearMonth=' + yearMonth + '&sortDate=true&sortDesc=true')
+    return new TotoAPI().fetch('/expenses/expenses?yearMonth=' + yearMonth + '&sortDate=true&sortDesc=true&user=' + userEmail)
         .then((response) => response.json());
 
   }
@@ -79,11 +79,11 @@ export default class ExpensesAPI {
    * Retrieves the month total spending
    * - yearMonth : the ym to consider
    */
-  getMonthTotalSpending(yearMonth, targetCurrency) {
+  getMonthTotalSpending(userEmail, yearMonth, targetCurrency) {
 
-    if (targetCurrency) query = '?targetCurrency=' + targetCurrency;
+    if (targetCurrency) query = '&targetCurrency=' + targetCurrency;
 
-    return new TotoAPI().fetch('/expenses/expenses/' + yearMonth + '/total' + query)
+    return new TotoAPI().fetch('/expenses/expenses/' + yearMonth + '/total?user=' + userEmail + query)
         .then((response) => response.json());
 
   }
@@ -91,12 +91,12 @@ export default class ExpensesAPI {
   /**
    * Retrieves the spending (total) for each day between dateFrom and dateTo
    */
-  getExpensesPerDay(dateFrom, dateTo, targetCurrency) {
+  getExpensesPerDay(userEmail, dateFrom, dateTo, targetCurrency) {
 
     let dateToFilter = dateTo == null ? '' : ('&dateTo=' + dateTo);
     let currencyFilter = targetCurrency ? '&targetCurrency=' + targetCurrency : '';
 
-    return new TotoAPI().fetch('/expenses/stats/expensesPerDay?dateFrom=' + dateFrom + dateToFilter + currencyFilter)
+    return new TotoAPI().fetch('/expenses/stats/expensesPerDay?user=' + userEmail + '&dateFrom=' + dateFrom + dateToFilter + currencyFilter)
         .then((response) => response.json());
 
   }
@@ -104,11 +104,11 @@ export default class ExpensesAPI {
   /**
    * Retrieves the spending (total) for each month after yearMonthGte
    */
-  getExpensesPerMonth(yearMonthGte, targetCurrency) {
+  getExpensesPerMonth(userEmail, yearMonthGte, targetCurrency) {
 
     let targetCurrencyFilter = targetCurrency ? '&targetCurrency=' + targetCurrency : ''
 
-    return new TotoAPI().fetch('/expenses/stats/expensesPerMonth?yearMonthGte=' + yearMonthGte + targetCurrencyFilter)
+    return new TotoAPI().fetch('/expenses/stats/expensesPerMonth?user=' + userEmail + '&yearMonthGte=' + yearMonthGte + targetCurrencyFilter)
         .then((response) => response.json());
 
   }
@@ -116,12 +116,12 @@ export default class ExpensesAPI {
   /**
    * Retrieves the spending categories for the specified month
    */
-  getTopSpendingCategoriesOfMonth(yearMonth, maxCategories, targetCurrency) {
+  getTopSpendingCategoriesOfMonth(userEmail, yearMonth, maxCategories, targetCurrency) {
 
     let maxCatFilter = maxCategories ? '&maxCategories=' + maxCategories :'';
     let targetCurrencyFilter = targetCurrency ? '&targetCurrency=' + targetCurrency : ''
 
-    return new TotoAPI().fetch('/expenses/stats/topCategoriesOfMonth?yearMonth=' + yearMonth + maxCatFilter + targetCurrencyFilter)
+    return new TotoAPI().fetch('/expenses/stats/topCategoriesOfMonth?user=' + userEmail + '&yearMonth=' + yearMonth + maxCatFilter + targetCurrencyFilter)
         .then((response) => response.json());
 
   }
@@ -129,11 +129,11 @@ export default class ExpensesAPI {
   /**
    * Retrieves the spending categories per month since yearMonthGte
    */
-  getTopSpendingCategoriesPerMonth(yearMonthGte, targetCurrency) {
+  getTopSpendingCategoriesPerMonth(userEmail, yearMonthGte, targetCurrency) {
 
     let targetCurrencyFilter = targetCurrency ? '&targetCurrency=' + targetCurrency : ''
 
-    return new TotoAPI().fetch('/expenses/stats/topCategoriesPerMonth?yearMonthGte=' + yearMonthGte + targetCurrencyFilter)
+    return new TotoAPI().fetch('/expenses/stats/topCategoriesPerMonth?user=' + userEmail + '&yearMonthGte=' + yearMonthGte + targetCurrencyFilter)
         .then((response) => response.json());
 
   }

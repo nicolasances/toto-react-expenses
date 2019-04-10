@@ -17,8 +17,6 @@ export default class TopSpendingCategoriesPerMonth extends Component {
     this.state = {
     }
 
-    this.load();
-
     // Binding
     this.load = this.load.bind(this);
     this.prepareData = this.prepareData.bind(this);
@@ -33,6 +31,9 @@ export default class TopSpendingCategoriesPerMonth extends Component {
    * When the component mount
    */
   componentDidMount() {
+
+    this.load();
+    
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
@@ -70,7 +71,7 @@ export default class TopSpendingCategoriesPerMonth extends Component {
 
     let targetCurrency = this.state.settings ? this.state.settings.currency : null;
 
-    new ExpensesAPI().getTopSpendingCategoriesPerMonth(yearMonthFrom, targetCurrency).then((data) => {
+    new ExpensesAPI().getTopSpendingCategoriesPerMonth(user.userInfo.email, yearMonthFrom, targetCurrency).then((data) => {
 
       if (data == null || data.months == null) return;
 
