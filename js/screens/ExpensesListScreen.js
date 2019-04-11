@@ -45,6 +45,7 @@ export default class ExpensesListScreen extends Component<Props> {
     this.dataExtractor = this.dataExtractor.bind(this);
     this.onItemPress = this.onItemPress.bind(this);
     this.onExpenseUpdated = this.onExpenseUpdated.bind(this);
+    this.onExpenseDeleted = this.onExpenseDeleted.bind(this);
     this.onMonthChange = this.onMonthChange.bind(this);
 
   }
@@ -56,15 +57,17 @@ export default class ExpensesListScreen extends Component<Props> {
 
     // Loading expenses
     this.loadExpenses();
-    
+
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseUpdated, this.onExpenseUpdated);
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseDeleted, this.onExpenseDeleted);
 
   }
 
   componentWillUnmount() {
     // REmove event listeners
     TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseUpdated, this.onExpenseUpdated);
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseDeleted, this.onExpenseDeleted);
   }
 
   /**
@@ -73,6 +76,15 @@ export default class ExpensesListScreen extends Component<Props> {
   onExpenseUpdated(event) {
 
     TRC.TotoEventBus.bus.publishEvent({name: 'totoListDataChanged', context: {item: event.context.expense}});
+
+  }
+
+  /**
+   * On deletion of an epense
+   */
+  onExpenseDeleted(event) {
+
+    this.loadExpenses();
 
   }
 
