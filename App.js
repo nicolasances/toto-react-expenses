@@ -12,7 +12,7 @@ import ExpenseDetailScreen from './js/screens/ExpenseDetailScreen';
 import SettingsScreen from './js/screens/SettingsScreen';
 
 // Client Id
-const clientId = '209706877536-ib0fd6co73jetqqjstq5tv9facsulf52.apps.googleusercontent.com';
+const clientId = Platform.OS == 'android' ? '209706877536-2hkg1qkvpsokqls7p78lbjahvqfknhh4.apps.googleusercontent.com' : '209706877536-ib0fd6co73jetqqjstq5tv9facsulf52.apps.googleusercontent.com';
 
 /**
  * Navigation Stack
@@ -108,6 +108,8 @@ export default class App extends Component {
   onLogin() {
 
     this.totoSignIn.signIn().then((userInfo) => {
+
+      console.log(userInfo);
 
       // Set the user
       user.setUserInfo(userInfo.user);

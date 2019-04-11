@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "209706877536",
+    "firebase_url": "https://toto-169617.firebaseio.com",
+    "project_id": "toto-169617",
+    "storage_bucket": "toto-169617.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209706877536:android:eb5b038ef76fde7c",
+        "android_client_info": {
+          "package_name": "com.totoreactexpenses"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209706877536-r0bsn20pjiokks7earqfdug2bdkbjp1l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.totoreactexpenses",
+            "certificate_hash": "b01840ddd2af0c49839ef84bece263a4f55842d8"
+          }
+        },
+        {
+          "client_id": "209706877536-2hkg1qkvpsokqls7p78lbjahvqfknhh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1Qp0XRKhZZgsmlcqTs-Aj1r59ITt8zK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209706877536-2hkg1qkvpsokqls7p78lbjahvqfknhh4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "209706877536-ib0fd6co73jetqqjstq5tv9facsulf52.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.TotoReactExpenses"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209706877536:android:11c935d7fd5a2a9b",
+        "android_client_info": {
+          "package_name": "com.totoreactsupermarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209706877536-5s13ia2d7ngnajl8kk1s6fd6kc4aaekq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.totoreactsupermarket",
+            "certificate_hash": "b01840ddd2af0c49839ef84bece263a4f55842d8"
+          }
+        },
+        {
+          "client_id": "209706877536-2hkg1qkvpsokqls7p78lbjahvqfknhh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1Qp0XRKhZZgsmlcqTs-Aj1r59ITt8zK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209706877536-2hkg1qkvpsokqls7p78lbjahvqfknhh4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "209706877536-ib0fd6co73jetqqjstq5tv9facsulf52.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.TotoReactExpenses"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

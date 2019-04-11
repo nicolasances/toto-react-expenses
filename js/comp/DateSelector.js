@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, DatePickerIOS, Modal} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, DatePickerIOS, Modal, Platform, DatePickerAndroid} from 'react-native';
 import TRC from 'toto-react-components';
 import moment from 'moment';
+
+const android = Platform.OS == 'android';
 
 export default class DateSelector extends Component {
 
@@ -14,6 +16,7 @@ export default class DateSelector extends Component {
     }
 
     this.setTime = this.setTime.bind(this);
+    this.selectADate = this.selectADate.bind(this);
   }
 
   /**
@@ -22,6 +25,28 @@ export default class DateSelector extends Component {
   setTime(date) {
 
     this.setState({date: date});
+
+  }
+
+  /**
+   * Selects a date: based on the platform:
+   * - iOS      - opens a modal to select the date through DatePickerIOS component
+   * - Android  - opens the Android date picker dialog directly
+   */
+  selectADate() {
+
+    if (android) {
+
+      DatePickerAndroid.open({date: this.state.date}).then(({action, year, month, day}) => {
+
+        if (action !== DatePickerAndroid.dismissedAction) {
+          let selectedDate = new Date(year, month, day);
+          this.setTime(selectedDate);
+          this.props.onDateChange(selectedDate);
+        }
+      })
+    }
+    else this.setState({modalVisible: true});
 
   }
 
@@ -40,8 +65,18 @@ export default class DateSelector extends Component {
       <Text style={[styles.todayYear]}>{todayYear}</Text>
     )
 
+    // Date picker
+    let datepicker
+    if (!android) datepicker = (
+      <DatePickerIOS
+          date={this.state.date}
+          onDateChange={this.setTime}
+          mode='date'
+          />
+    )
+
     return (
-      <TouchableOpacity style={styles.todayContainer} onPress={() => {this.setState({modalVisible: true})}}>
+      <TouchableOpacity style={styles.todayContainer} onPress={this.selectADate}>
         <Text style={[styles.todayDay]}>{todayDay}</Text>
         <Text style={[styles.todayMonth]}>{todayMonth}</Text>
         {yearText}
@@ -49,11 +84,7 @@ export default class DateSelector extends Component {
         <Modal  animationType="slide" transparent={false} visible={this.state.modalVisible}>
           <View style={styles.modalContainer}>
             <View style={styles.pickerContainer}>
-              <DatePickerIOS
-              date={this.state.date}
-              onDateChange={this.setTime}
-              mode='date'
-              />
+              {datepicker}
             </View>
             <View style={styles.buttonsContainer}>
               <TRC.TotoIconButton image={require('../../img/tick.png')} onPress={() => {this.props.onDateChange(this.state.date); this.setState({modalVisible: false});}} />
