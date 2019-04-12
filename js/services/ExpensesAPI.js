@@ -81,6 +81,7 @@ export default class ExpensesAPI {
    */
   getMonthTotalSpending(userEmail, yearMonth, targetCurrency) {
 
+    let query = '';
     if (targetCurrency) query = '&targetCurrency=' + targetCurrency;
 
     return new TotoAPI().fetch('/expenses/expenses/' + yearMonth + '/total?user=' + userEmail + query)

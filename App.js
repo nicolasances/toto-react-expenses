@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, View, StyleSheet, AppState} from 'react-native';
+import {Platform, View, StyleSheet, AppState, StatusBar} from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import TRC from 'toto-react-components';
 import user from './js/User';
@@ -145,6 +145,7 @@ export default class App extends Component {
 
     return (
       <View style={{flex: 1}}>
+        <StatusBar backgroundColor={TRC.TotoTheme.theme.COLOR_THEME} />
         <AppContainer />
         <TRC.TotoNotification />
       </View>

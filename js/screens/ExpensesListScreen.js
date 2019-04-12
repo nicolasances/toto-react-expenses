@@ -8,6 +8,7 @@ import categoriesMap from 'TotoReactExpenses/js/util/CategoriesMap';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoFlatList from 'TotoReactExpenses/js/TotoFlatList';
 import MonthNavigator from 'TotoReactExpenses/js/comp/MonthNavigator';
+import TotoStaticMessage from 'TotoReactExpenses/js/comp/TotoStaticMessage';
 import user from 'TotoReactExpenses/js/User';
 
 const windowHeight = Dimensions.get('window').height;
@@ -22,7 +23,7 @@ export default class ExpensesListScreen extends Component<Props> {
       return {
         headerLeft: null,
         headerTitle: <TRC.TotoTitleBar
-                        title='Expenses list'
+                        title='Your payments'
                         color={TRC.TotoTheme.theme.COLOR_THEME}
                         titleColor={TRC.TotoTheme.theme.COLOR_TEXT}
                         back={true}
@@ -176,6 +177,17 @@ export default class ExpensesListScreen extends Component<Props> {
    */
   render() {
 
+    let currentMonthString = moment(this.state.yearMonth + '01', 'YYYYMMDD').format('MMMM');
+    let messageText = 'No payments in ' + currentMonthString;
+
+    let message = this.state.expenses == null || this.state.expenses.length == 0 ? (
+      <TotoStaticMessage
+        image={require('TotoReactExpenses/img/consolidate.png')}
+        text={messageText}
+        detail="Go back to the previous screen and start adding some payments!"
+        />
+    ) : null;
+
     return (
       <View style={styles.container}>
 
@@ -184,6 +196,7 @@ export default class ExpensesListScreen extends Component<Props> {
         </View>
 
         <View style={{height: windowHeight - 170}}>
+          {message}
           <TotoFlatList
           data={this.state.expenses}
           dataExtractor={this.dataExtractor}

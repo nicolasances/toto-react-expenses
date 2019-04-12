@@ -22,7 +22,7 @@ export default class HomeScreen extends Component<Props> {
 
       return {
         headerTitle: <TRC.TotoTitleBar
-                        title='Expenses'
+                        title='Payments'
                         color={TRC.TotoTheme.theme.COLOR_THEME}
                         titleColor={TRC.TotoTheme.theme.COLOR_TEXT}
                         />

@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import CurrencySelector from 'TotoReactExpenses/js/comp/CurrencySelector';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
+import TotoStaticMessage from 'TotoReactExpenses/js/comp/TotoStaticMessage';
 import user from 'TotoReactExpenses/js/User';
 
 export default class SettingsScreen extends Component<Props> {
@@ -109,6 +110,14 @@ export default class SettingsScreen extends Component<Props> {
     return (
       <View style={styles.container}>
 
+        <View style={styles.line1}>
+          <TotoStaticMessage
+            image={require('TotoReactExpenses/img/settings.png')}
+            text="These are your apps settings"
+            detail="Change them as you please ;)"
+            />
+        </View>
+
         <View style={styles.line2}>
           <View style={styles.currencyContainer}>
             <Text style={styles.label}>Currency</Text>
@@ -143,8 +152,11 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     marginBottom: 6,
   },
+  line1: {
+    marginBottom: 24,
+  },
   line2: {
-    marginVertical: 24,
+    marginTop: 24,
     paddingHorizontal: 12,
     flexDirection: 'row',
     justifyContent: 'flex-start',

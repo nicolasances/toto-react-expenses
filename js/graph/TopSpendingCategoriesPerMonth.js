@@ -6,6 +6,7 @@ import moment from 'moment';
 import * as config from 'TotoReactExpenses/js/Config';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoBarChart from 'TotoReactExpenses/js/TotoBarChart';
+import TotoStaticMessage from 'TotoReactExpenses/js/comp/TotoStaticMessage';
 import categoriesMap from 'TotoReactExpenses/js/util/CategoriesMap';
 import user from 'TotoReactExpenses/js/User';
 
@@ -147,8 +148,18 @@ export default class TopSpendingCategoriesPerMonth extends Component {
    * Render the comp
    */
   render() {
+
+    let message = this.state.categories == null || this.state.categories.length == 0 ? (
+      <TotoStaticMessage
+        image={require('TotoReactExpenses/img/statistics.png')}
+        text="Here you'll see your top spending category of each month!"
+        detail="Just start adding some expenses and you'll see!"
+        />
+    ) : null;
+
     return (
       <View style={styles.container}>
+        {message}
         <TotoBarChart
           data={this.state.preparedData}
           valueLabelTransform={this.valueLabel}

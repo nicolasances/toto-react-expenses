@@ -9,6 +9,7 @@ const d3 = {array};
 import * as config from 'TotoReactExpenses/js/Config';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoLineChart from 'TotoReactExpenses/js/TotoLineChart';
+import TotoStaticMessage from 'TotoReactExpenses/js/comp/TotoStaticMessage';
 import user from 'TotoReactExpenses/js/User';
 
 export default class ExpensesPerMonthGraph extends Component {
@@ -171,8 +172,18 @@ export default class ExpensesPerMonthGraph extends Component {
    * Render the comp
    */
   render() {
+
+    let message = this.state.months == null || this.state.months.length == 0 ? (
+      <TotoStaticMessage
+        image={require('TotoReactExpenses/img/statistics.png')}
+        text="Here you'll see the amounts that you spent each month!"
+        detail="Just start adding some expenses and witness Toto's magic!"
+        />
+    ) : null;
+
     return (
       <View style={styles.container}>
+        {message}
         <TotoLineChart
           data={this.state.preparedData}
           showValuePoints={true}
