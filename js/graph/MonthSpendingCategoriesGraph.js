@@ -125,6 +125,8 @@ export default class MonthSpendingCategoriesGraph extends Component {
   categoryImgLoader(datum) {
 
     if (this.state.categories == null) return;
+    if (datum == null) return;
+    if (this.state.categories[datum.x] == null) return;
 
     let image = categoriesMap.get(this.state.categories[datum.x].category).image;
 

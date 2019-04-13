@@ -153,6 +153,7 @@ export default class ExpensesPerMonthGraph extends Component {
   xAxisTransform(value) {
 
     if (this.state.months == null) return;
+    if (this.state.months[value] == null) return;
 
     let month = this.state.months[value];
     let parsedMonth = moment(month.yearMonth + '01', 'YYYYMMDD');

@@ -127,6 +127,8 @@ export default class TopSpendingCategoriesPerMonth extends Component {
   categoryImgLoader(datum) {
 
     if (this.state.categories == null) return;
+    if (datum == null) return;
+    if (this.state.categories[datum.x] == null) return;
 
     let image = categoriesMap.get(this.state.categories[datum.x].category).image;
 
@@ -140,6 +142,7 @@ export default class TopSpendingCategoriesPerMonth extends Component {
   xAxisTransform(value) {
 
     if (this.state.categories == null) return;
+    if (this.state.categories[value] == null) return;
 
     return moment(this.state.categories[value].yearMonth + '01', 'YYYYMMDD').format('MMM');
 
