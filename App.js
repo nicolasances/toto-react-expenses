@@ -10,6 +10,7 @@ import NewExpenseScreen from './js/screens/NewExpenseScreen';
 import ExpensesListScreen from './js/screens/ExpensesListScreen';
 import ExpenseDetailScreen from './js/screens/ExpenseDetailScreen';
 import SettingsScreen from './js/screens/SettingsScreen';
+import IntroScreen from './js/screens/IntroScreen';
 
 // Client Id
 const clientId = Platform.OS == 'android' ? '209706877536-2hkg1qkvpsokqls7p78lbjahvqfknhh4.apps.googleusercontent.com' : '209706877536-ib0fd6co73jetqqjstq5tv9facsulf52.apps.googleusercontent.com';
@@ -24,6 +25,7 @@ const AppNavigator = createStackNavigator({
   ExpensesListScreen: {screen: ExpensesListScreen},
   ExpenseDetailScreen: {screen: ExpenseDetailScreen},
   SettingsScreen: {screen: SettingsScreen},
+  IntroScreen: {screen: IntroScreen},
 
 }, {
   initialRouteName: 'HomeScreen',

@@ -8,6 +8,34 @@ import user from 'TotoReactExpenses/js/User';
 export default class ExpensesAPI {
 
   /**
+   * Get generic app settings
+   * from the /app/expenses microservice
+   */
+  getAppSettings(userEmail) {
+
+    return new TotoAPI().fetch('/app/expenses/settings?user=' + userEmail)
+        .then((response) => response.json());
+
+  }
+
+  /**
+   * Put generic app settings
+   */
+  putAppSettings(settings) {
+
+    // Post the data
+    return new TotoAPI().fetch('/app/expenses/settings', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(settings)
+    }).then((response => response.json()));
+
+
+  }
+
+  /**
    * Retrieves the month's expenses
    */
   getExpenses(userEmail, yearMonth) {

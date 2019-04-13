@@ -4,6 +4,8 @@ import TRC from 'toto-react-components';
 import * as config from '../Config';
 import Swiper from 'react-native-swiper';
 
+import user from 'TotoReactExpenses/js/User';
+import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import LastDaysSpendingGraph from 'TotoReactExpenses/js/graph/LastDaysSpendingGraph';
 import MonthSpendingBubble from 'TotoReactExpenses/js/comp/MonthSpendingBubble';
 import MonthSpendingCategoriesGraph from 'TotoReactExpenses/js/graph/MonthSpendingCategoriesGraph';
@@ -36,11 +38,12 @@ export default class HomeScreen extends Component<Props> {
     super(props);
 
     this.state = {
-      todaySessions: null
+      showDemo: true,
+      user: user.userInfo,
     }
 
     // Bindings
-    // this.onSessionDeleted = this.onSessionDeleted.bind(this);
+    this.onDemoFinished = this.onDemoFinished.bind(this);
 
   }
 
@@ -48,14 +51,41 @@ export default class HomeScreen extends Component<Props> {
    * When the component mount
    */
   componentDidMount() {
+
+    this.loadAppSettings();
+
     // Add event listeners
-    // TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.sessionDeleted, this.onSessionDeleted);
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.demoFinished, this.onDemoFinished);
 
   }
 
   componentWillUnmount() {
     // REmove event listeners
-    // TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.sessionDeleted, this.onSessionDeleted);
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.demoFinished, this.onDemoFinished);
+  }
+
+  /**
+   * When the demo is done
+   */
+  onDemoFinished() {
+    this.setState({showDemo: false});
+  }
+
+  /**
+   * Loads the app settings
+   */
+  loadAppSettings() {
+
+    new ExpensesAPI().getAppSettings(this.state.user.email).then((data) => {
+
+      this.setState({
+        showDemo: data.showDemo,
+      })
+
+      if (data.showDemo) this.props.navigation.navigate('IntroScreen');
+
+    })
+
   }
 
 
@@ -63,6 +93,11 @@ export default class HomeScreen extends Component<Props> {
    * Renders the home screen
    */
   render() {
+
+    if (this.state.showDemo) return (
+      <View style={styles.container}>
+      </View>
+    );
 
     return (
       <View style={styles.container}>

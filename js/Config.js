@@ -8,4 +8,5 @@ export const EVENTS = {
   expenseDeleted: 'expenseDeleted', // An expense has been deleted
   expenseUpdated: 'expenseUpdated', // An expense has been updated
   settingsUpdated: 'settingsUpdated', // the settings have been updated
+  demoFinished: 'demoFinished', // the demo is finished
 }
