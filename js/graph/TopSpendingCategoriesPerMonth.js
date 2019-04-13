@@ -16,6 +16,7 @@ export default class TopSpendingCategoriesPerMonth extends Component {
     super(props);
 
     this.state = {
+      loaded: false
     }
 
     // Binding
@@ -78,10 +79,10 @@ export default class TopSpendingCategoriesPerMonth extends Component {
 
     new ExpensesAPI().getTopSpendingCategoriesPerMonth(user.userInfo.email, yearMonthFrom, targetCurrency).then((data) => {
 
-      if (data == null || data.months == null) return;
+      if (data == null || data.months == null) {this.setState({loaded: true}); return;}
 
       this.setState({categories: null}, () => {
-        this.setState({categories: data.months}, this.prepareData);
+        this.setState({loaded: true, categories: data.months}, this.prepareData);
       })
 
     });
@@ -149,7 +150,7 @@ export default class TopSpendingCategoriesPerMonth extends Component {
    */
   render() {
 
-    let message = this.state.categories == null || this.state.categories.length == 0 ? (
+    let message = this.state.loaded && (this.state.categories == null || this.state.categories.length == 0) ? (
       <TotoStaticMessage
         image={require('TotoReactExpenses/img/statistics.png')}
         text="Here you'll see your top spending category of each month!"

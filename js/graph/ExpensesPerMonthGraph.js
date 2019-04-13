@@ -18,6 +18,7 @@ export default class ExpensesPerMonthGraph extends Component {
     super(props);
 
     this.state = {
+      loaded: false
     }
 
     // Binding
@@ -80,10 +81,10 @@ export default class ExpensesPerMonthGraph extends Component {
 
     new ExpensesAPI().getExpensesPerMonth(user.userInfo.email, yearMonthFrom, targetCurrency).then((data) => {
 
-      if (data == null || data.months == null) return;
+      if (data == null || data.months == null) {this.setState({loaded: true}); return;}
 
       this.setState({months: null}, () => {
-        this.setState({months: data.months}, this.prepareData);
+        this.setState({loaded: true, months: data.months}, this.prepareData);
       })
 
     });
@@ -173,7 +174,7 @@ export default class ExpensesPerMonthGraph extends Component {
    */
   render() {
 
-    let message = this.state.months == null || this.state.months.length == 0 ? (
+    let message = this.state.loaded && (this.state.months == null || this.state.months.length == 0) ? (
       <TotoStaticMessage
         image={require('TotoReactExpenses/img/statistics.png')}
         text="Here you'll see the amounts that you spent each month!"

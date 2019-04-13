@@ -16,6 +16,7 @@ export default class MonthSpendingCategoriesGraph extends Component {
     super(props);
 
     this.state = {
+      loaded: false
     }
 
     // Binding
@@ -76,10 +77,10 @@ export default class MonthSpendingCategoriesGraph extends Component {
 
     new ExpensesAPI().getTopSpendingCategoriesOfMonth(user.userInfo.email, yearMonth, maxCategories, targetCurrency).then((data) => {
 
-      if (data == null || data.categories == null) return;
+      if (data == null || data.categories == null) {this.setState({loaded:true}); return;}
 
       this.setState({categories: null}, () => {
-        this.setState({categories: data.categories}, this.prepareData);
+        this.setState({loaded: true, categories: data.categories}, this.prepareData);
       })
 
     });
@@ -136,7 +137,9 @@ export default class MonthSpendingCategoriesGraph extends Component {
    */
   render() {
 
-    let message = this.state.categories == null || this.state.categories.length == 0 ? (
+    console.log(this.state.loaded);
+
+    let message = this.state.loaded && (this.state.categories == null || this.state.categories.length == 0) ? (
       <TotoStaticMessage
         image={require('TotoReactExpenses/img/statistics.png')}
         text="Here you'll see what you spent this month in each category "
