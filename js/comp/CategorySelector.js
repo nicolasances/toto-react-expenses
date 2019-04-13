@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, TouchableOpacity, Image, Modal, Text} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Image, Modal, Text, Dimensions} from 'react-native';
 import TRC from 'toto-react-components';
 
 import categoriesMap from 'TotoReactExpenses/js/util/CategoriesMap';
+
+const windowWidth = Dimensions.get('window').width;
+const numOfCategoriesPerLine = 4;
+const maxAvatarWidth = windowWidth / numOfCategoriesPerLine;
+const avatarMarginH = 14;
+const avatarWidth = (maxAvatarWidth - 2 * avatarMarginH);
 
 export default class CategorySelector extends Component {
 
@@ -110,16 +116,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageContainer: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
+    width: avatarWidth,
+    height: avatarWidth,
+    borderRadius: avatarWidth / 2,
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
-    width: 40,
-    height: 40,
+    width: avatarWidth - 32,
+    height: avatarWidth - 32,
   },
   categoryImg: {
     width: 80,
@@ -152,7 +158,7 @@ const styles = StyleSheet.create({
   },
   catSelectorContainer: {
     alignItems: 'center',
-    width: 72,
+    width: avatarWidth,
     height: 120,
     flexWrap: 'wrap',
     marginHorizontal: 12,

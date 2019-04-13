@@ -138,6 +138,15 @@ export default class NewExpenseScreen extends Component<Props> {
       categoryImageColor = {tintColor: TRC.TotoTheme.theme.COLOR_THEME_LIGHT}
     }
 
+    // Show save button only when the data is there!
+    let saveButton;
+    if (this.state.amount != null && this.state.description != null) saveButton = (
+      <TRC.TotoIconButton
+        image={require('TotoReactExpenses/img/tick.png')}
+        onPress={this.saveExpense}
+        />
+    )
+
     return (
       <View style={styles.container}>
 
@@ -175,10 +184,7 @@ export default class NewExpenseScreen extends Component<Props> {
         </View>
 
         <View style={styles.line4}>
-          <TRC.TotoIconButton
-            image={require('TotoReactExpenses/img/tick.png')}
-            onPress={this.saveExpense}
-            />
+          {saveButton}
         </View>
 
 
