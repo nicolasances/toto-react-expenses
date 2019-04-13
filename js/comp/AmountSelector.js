@@ -16,7 +16,7 @@ export default class CurrencySelector extends Component {
 
         <TextInput
           style={styles.amountInput }
-          onChangeText={(text) => {this.props.onAmountChange(parseFloat(text))}}
+          onChangeText={(text) => {this.props.onAmountChange(parseFloat(text.replace(',', '.')))}}
           keyboardType='numeric'
           placeholder='100'
           defaultValue={this.props.amount ? this.props.amount + '' : ''}

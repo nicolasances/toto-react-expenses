@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, StatusBar, TextInput, FlatList, Keyboard} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Image, Dimensions, StatusBar, TextInput, FlatList, Keyboard} from 'react-native';
 import TRC from 'toto-react-components';
 import * as config from '../Config';
 import moment from 'moment';
@@ -141,49 +141,50 @@ export default class ExpenseDetailScreen extends Component<Props> {
     }
 
     return (
-      <View style={styles.container}>
+      <TouchableWithoutFeedback style={styles.container} onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
 
-        <View style={styles.line1}>
-          <View style={styles.dateContainer}>
-            <Text style={styles.label}>Date</Text>
-            <DateSelector date={this.state.expense.date} showYear={false} onDateChange={this.setDate} />
+          <View style={styles.line1}>
+            <View style={styles.dateContainer}>
+              <Text style={styles.label}>Date</Text>
+              <DateSelector date={this.state.expense.date} showYear={false} onDateChange={this.setDate} />
+            </View>
+            <View style={styles.amountContainer}>
+              <Text style={styles.label}>Amount</Text>
+              <AmountSelector amount={this.state.expense.amount} onAmountChange={this.setAmount} />
+            </View>
+            <View style={styles.currencyContainer}>
+              <Text style={styles.label}>Currency</Text>
+              <CurrencySelector currency={this.state.expense.currency} onCurrencyChange={this.setCurrency} />
+            </View>
           </View>
-          <View style={styles.amountContainer}>
-            <Text style={styles.label}>Amount</Text>
-            <AmountSelector amount={this.state.expense.amount} onAmountChange={this.setAmount} />
+
+          <View style={styles.line2}>
+            <TextInput
+              style={styles.descriptionInput}
+              value={this.state.expense.description}
+              onChangeText={(text) => {this.setState({expense: {...this.state.expense, description: text}})}}
+              placeholder='Expense description here...'
+              placeholderTextColor={TRC.TotoTheme.theme.COLOR_THEME_LIGHT}
+              keyboardType='default'
+              />
           </View>
-          <View style={styles.currencyContainer}>
-            <Text style={styles.label}>Currency</Text>
-            <CurrencySelector currency={this.state.expense.currency} onCurrencyChange={this.setCurrency} />
+
+          <View style={styles.line3}>
+            <Text style={[styles.label, {marginBottom: 12}]}>Category</Text>
+            <CategorySelector category={this.state.expense.category} onCategoryChange={this.setCategory} />
           </View>
+
+          <View style={{flex: 1}}>
+          </View>
+
+          <View style={styles.line4}>
+            <TRC.TotoIconButton image={require('TotoReactExpenses/img/tick.png')} onPress={this.saveExpense} />
+            <TRC.TotoIconButton image={require('TotoReactExpenses/img/trash.png')} onPress={this.deleteExpense} />
+          </View>
+
         </View>
-
-        <View style={styles.line2}>
-          <TextInput
-            style={styles.descriptionInput}
-            value={this.state.expense.description}
-            onChangeText={(text) => {this.setState({expense: {...this.state.expense, description: text}})}}
-            placeholder='Expense description here...'
-            placeholderTextColor={TRC.TotoTheme.theme.COLOR_THEME_LIGHT}
-            keyboardType='default'
-            />
-        </View>
-
-        <View style={styles.line3}>
-          <Text style={[styles.label, {marginBottom: 12}]}>Category</Text>
-          <CategorySelector category={this.state.expense.category} onCategoryChange={this.setCategory} />
-        </View>
-
-        <View style={{flex: 1}}>
-        </View>
-
-        <View style={styles.line4}>
-          <TRC.TotoIconButton image={require('TotoReactExpenses/img/tick.png')} onPress={this.saveExpense} />
-          <TRC.TotoIconButton image={require('TotoReactExpenses/img/trash.png')} onPress={this.deleteExpense} />
-        </View>
-
-
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
