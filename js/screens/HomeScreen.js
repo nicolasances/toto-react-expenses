@@ -44,6 +44,7 @@ export default class HomeScreen extends Component<Props> {
 
     // Bindings
     this.onDemoFinished = this.onDemoFinished.bind(this);
+    this.loadAppSettings = this.loadAppSettings.bind(this);
 
   }
 

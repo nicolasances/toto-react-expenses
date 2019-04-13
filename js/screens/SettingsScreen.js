@@ -42,6 +42,7 @@ export default class SettingsScreen extends Component<Props> {
     // Bindings
     this.saveSettings = this.saveSettings.bind(this);
     this.setCurrency = this.setCurrency.bind(this);
+    this.showDemo = this.showDemo.bind(this);
 
   }
 
@@ -65,7 +66,6 @@ export default class SettingsScreen extends Component<Props> {
   loadSettings() {
 
     new ExpensesAPI().getSettings(this.state.user.email).then((data) => {
-
       this.setState({
         currency: data.currency ? data.currency : 'EUR'
       })
@@ -78,6 +78,7 @@ export default class SettingsScreen extends Component<Props> {
    */
   saveSettings() {
 
+    // Settings
     let payload = {
       user: this.state.user.email,
       currency: this.state.currency
@@ -90,8 +91,16 @@ export default class SettingsScreen extends Component<Props> {
 
       // Return back
       this.props.navigation.goBack();
-
     })
+
+  }
+
+  /**
+   * Shows the demo again
+   */
+  showDemo() {
+
+    this.props.navigation.navigate('IntroScreen');
 
   }
 
@@ -125,6 +134,19 @@ export default class SettingsScreen extends Component<Props> {
           </View>
         </View>
 
+        <View style={styles.demoContainer}>
+          <View style={styles.currencyContainer}>
+            <Text style={styles.label}>Do you want to see the demo again?</Text>
+            <View style={{marginTop: 12}}>
+              <TRC.TotoIconButton
+                image={require('TotoReactExpenses/img/chimp.png')}
+                size='l'
+                onPress={this.showDemo}
+                />
+            </View>
+          </View>
+        </View>
+
         <View style={styles.buttonsContainer}>
           <TRC.TotoIconButton
             image={require('TotoReactExpenses/img/tick.png')}
@@ -147,15 +169,21 @@ const styles = StyleSheet.create({
     paddingTop: 24,
   },
   label: {
-    fontSize: 12,
-    color: TRC.TotoTheme.theme.COLOR_TEXT,
-    opacity: 0.8,
+    fontSize: 16,
+    color: TRC.TotoTheme.theme.COLOR_THEME_DARK,
     marginBottom: 6,
   },
   line1: {
     marginBottom: 24,
   },
   line2: {
+    marginTop: 24,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  demoContainer: {
     marginTop: 24,
     paddingHorizontal: 12,
     flexDirection: 'row',

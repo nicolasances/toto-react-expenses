@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     paddingTop: 24,
   },
   label: {
-    fontSize: 12,
+    fontSize: 15,
     color: TRC.TotoTheme.theme.COLOR_TEXT,
     opacity: 0.8,
     marginBottom: 6,
