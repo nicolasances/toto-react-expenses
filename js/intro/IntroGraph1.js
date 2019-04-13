@@ -7,6 +7,10 @@ import TotoIntroMessage from 'TotoReactExpenses/js/comp/TotoIntroMessage';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
+const iw = 961;
+const ih = 856;
+const ratio = ih / iw;
+
 export default class IntroGraph1 extends Component {
 
   constructor(props) {
@@ -21,10 +25,8 @@ export default class IntroGraph1 extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={{flex: 1}}>
-        </View>
         <View style={styles.messageContainer}>
-          <TotoIntroMessage arrow={false} layout="column" text="This chart displays how much you spent each day in the last 8 days" />
+          <TotoIntroMessage size='l' arrow={false} layout="column" text="This chart displays how much you spent each day in the last 8 days" />
         </View>
         <View style={styles.imgContainer}>
           <Image style={styles.img} source={require('TotoReactExpenses/img/intro/graph1.png')} />
@@ -46,14 +48,16 @@ const styles = StyleSheet.create({
     // marginBottom: 12,
   },
   img: {
-    width: width,
-    height: height / 2,
+    width: width - 24,
+    height: (width - 24) * ratio,
     marginLeft: 12,
     marginBottom: 60,
   },
   messageContainer: {
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 12,
     marginVertical: 12,
     width: width,

@@ -7,6 +7,10 @@ import TotoIntroMessage from 'TotoReactExpenses/js/comp/TotoIntroMessage';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
+const iw = 625;
+const ih = 277;
+const ratio = ih / iw;
+
 export default class IntroMenu extends Component {
 
   constructor(props) {
@@ -21,7 +25,7 @@ export default class IntroMenu extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={[styles.messageContainer, {flex: 1, justifyContent: 'flex-end'}]}>
+        <View style={[styles.messageContainer, {justifyContent: 'flex-end'}]}>
           <TotoIntroMessage
             text="The left button gives you access to your settings"
             arrowDir="down"
@@ -30,11 +34,13 @@ export default class IntroMenu extends Component {
         <View style={styles.imgContainer}>
           <Image style={styles.img} source={require('TotoReactExpenses/img/intro/menu.png')} />
         </View>
-        <View style={[styles.messageContainer, {flex: 1, justifyContent: 'flex-start'}]}>
+        <View style={[styles.messageContainer, {justifyContent: 'flex-start'}]}>
           <TotoIntroMessage
             text="The center button is for adding payments, the right one to see the list of payments"
             avatarPosition='right'
             />
+        </View>
+        <View style={{flex: 1}}>
         </View>
       </View>
     )
@@ -53,8 +59,8 @@ const styles = StyleSheet.create({
     // marginBottom: 12,
   },
   img: {
-    width: 400,
-    height: 140,
+    width: width - 24,
+    height: (width - 24) * ratio,
     marginLeft: 6,
   },
   messageContainer: {

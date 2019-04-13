@@ -7,6 +7,10 @@ import TotoIntroMessage from 'TotoReactExpenses/js/comp/TotoIntroMessage';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
+const iw = 949;
+const ih = 149;
+const ratio = ih / iw;
+
 export default class IntroConsolidateSymbol extends Component {
 
   constructor(props) {
@@ -48,7 +52,7 @@ const styles = StyleSheet.create({
   },
   img: {
     width: width - 48,
-    height: 50,
+    height: (width - 48) * ratio,
     marginLeft: 6,
   },
   messageContainer: {

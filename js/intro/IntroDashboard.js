@@ -6,6 +6,10 @@ import TotoIntroMessage from 'TotoReactExpenses/js/comp/TotoIntroMessage';
 
 const width = Dimensions.get('window').width;
 
+const iw = 929;
+const ih = 291;
+const ratio = ih / iw;
+
 export default class IntroDashboard extends Component {
 
   constructor(props) {
@@ -60,8 +64,8 @@ const styles = StyleSheet.create({
     // marginBottom: 12,
   },
   img: {
-    width: width-24,
-    height: 120
+    width: width-12,
+    height: (width-12) * ratio
   },
   messageContainer: {
     flexDirection: 'column',

@@ -7,6 +7,10 @@ import TotoIntroMessage from 'TotoReactExpenses/js/comp/TotoIntroMessage';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
+const iw = 976;
+const ih = 859;
+const ratio = ih / iw;
+
 export default class IntroGraph3 extends Component {
 
   constructor(props) {
@@ -21,11 +25,10 @@ export default class IntroGraph3 extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={{flex: 1}}>
-        </View>
         <View style={styles.messageContainer}>
           <TotoIntroMessage
             arrow={false}
+            size='l'
             layout="column" 
             text="This chart displays what was the most expensive category of expenses each month in the last year" />
         </View>
@@ -49,14 +52,16 @@ const styles = StyleSheet.create({
     // marginBottom: 12,
   },
   img: {
-    width: width-12,
-    height: height / 2.1,
+    width: width-24,
+    height: (width - 24) * ratio,
     marginLeft: 6,
     marginBottom: 60,
   },
   messageContainer: {
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 12,
     marginVertical: 12,
     width: width,
