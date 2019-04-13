@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: TRC.TotoTheme.theme.COLOR_THEME_DARK,
     justifyContent: 'center',
+    alignItems: 'center',
     paddingTop: 64,
   },
   buttonsContainer: {
@@ -144,6 +145,8 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     flexWrap: 'wrap',
     flex: 1,
   },
