@@ -12,6 +12,7 @@ import IntroGraph2 from 'TotoReactExpenses/js/intro/IntroGraph2';
 import IntroGraph3 from 'TotoReactExpenses/js/intro/IntroGraph3';
 import IntroMenu from 'TotoReactExpenses/js/intro/IntroMenu';
 import IntroFinished from 'TotoReactExpenses/js/intro/IntroFinished';
+import IntroConsolidateSymbol from 'TotoReactExpenses/js/intro/IntroConsolidateSymbol';
 
 import user from 'TotoReactExpenses/js/User';
 
@@ -84,6 +85,7 @@ export default class IntroScreen extends Component<Props> {
           <IntroGraph1 />
           <IntroGraph2 />
           <IntroGraph3 />
+          <IntroConsolidateSymbol />
           <IntroFinished onFinished={this.onFinished}/>
 
         </Swiper>
