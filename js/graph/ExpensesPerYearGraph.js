@@ -160,6 +160,7 @@ export default class ExpensesPerYearGraph extends Component {
           data={this.state.preparedData}
           valueLabelTransform={this.valueLabel}
           xAxisTransform={this.xAxisTransform}
+          maxBarWidth={70}
           />
       </View>
     )

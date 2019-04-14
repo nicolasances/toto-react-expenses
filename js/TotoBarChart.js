@@ -184,7 +184,7 @@ export default class TotoBarChart extends Component {
       // Definition of the value font size
       // In case the bars are really large, then add some size to the font
       let addedSize = 0;
-      if (this.barWidth > 30) addedSize += 3;
+      if (this.barWidth >= 60) addedSize += 3;
 
       let font = {
         fontSize: (value.length <= 3 ? 14 : 11) + addedSize

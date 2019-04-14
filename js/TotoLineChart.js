@@ -36,6 +36,7 @@ const d3 = {scale, shape, array, path};
  * - yLines                 : (optional) the y values for which to draw a horizontal line (to show the scale)
  *                            if passed, it's an [y1, y2, y3, ...]
  *                            each value will correspond to a horizontal line
+ * - yLinesNumberLocale     : (optional) the locale to use to format the number with toLocaleString('<locale>') ... e,g. 'it'
  * - valueLabelColor        : (optional, default COLOR_TEXT) the color of the value labels
  */
 export default class TotoLineChart extends Component {
@@ -160,10 +161,14 @@ export default class TotoLineChart extends Component {
 
       let key = 'Label-YLine-' + Math.random();
 
+      // Value formatting
+      let value = ylines[i];
+      if (this.props.yLinesNumberLocale && ylines[i]) value = ylines[i].toLocaleString(this.props.yLinesNumberLocale);
+
       // Create the text element
       let element = (
         <View key={key} style={{position: 'absolute', left: 6, top: this.y(ylines[i]) + 3}}>
-          <Text style={styles.yAxisLabel}>{ylines[i]}</Text>
+          <Text style={styles.yAxisLabel}>{value}</Text>
         </View>
       );
 

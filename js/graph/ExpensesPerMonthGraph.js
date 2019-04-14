@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Slider, Modal} from 'react-native';
 import TRC from 'toto-react-components';
 import moment from 'moment';
 import * as array from 'd3-array';
@@ -10,6 +10,7 @@ import * as config from 'TotoReactExpenses/js/Config';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import TotoLineChart from 'TotoReactExpenses/js/TotoLineChart';
 import TotoStaticMessage from 'TotoReactExpenses/js/comp/TotoStaticMessage';
+import Measurement from 'TotoReactExpenses/js/comp/Measurement';
 import user from 'TotoReactExpenses/js/User';
 
 export default class ExpensesPerMonthGraph extends Component {
@@ -17,16 +18,25 @@ export default class ExpensesPerMonthGraph extends Component {
   constructor(props) {
     super(props);
 
+    this.maxMonths = 40;
+    this.limitMonthsToShowValue = 10;
+
     this.state = {
-      loaded: false
+      loaded: false,
+      modalVisible: false,
+      maxMonths: 40
     }
 
     // Binding
     this.load = this.load.bind(this);
     this.prepareData = this.prepareData.bind(this);
+    this.valueLabel = this.valueLabel.bind(this);
     this.loadExpenses = this.loadExpenses.bind(this);
     this.xAxisTransform = this.xAxisTransform.bind(this);
     this.onExpenseCreated = this.onExpenseCreated.bind(this);
+    this.showSettings = this.showSettings.bind(this);
+    this.onMonthProspSettingChange = this.onMonthProspSettingChange.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
   }
 
   /**
@@ -75,8 +85,8 @@ export default class ExpensesPerMonthGraph extends Component {
   loadExpenses() {
 
     // Define how many days in the past
-    let maxMonths = 40;
-    let yearMonthFrom = moment().startOf('month').subtract(maxMonths - 1, 'months').format('YYYYMM');
+    let maxMonths = this.state.maxMonths;
+    let yearMonthFrom = moment().startOf('month').subtract(maxMonths, 'months').format('YYYYMM');
     let targetCurrency = this.state.settings ? this.state.settings.currency : null;
 
     new ExpensesAPI().getExpensesPerMonth(user.userInfo.email, yearMonthFrom, targetCurrency).then((data) => {
@@ -123,6 +133,8 @@ export default class ExpensesPerMonthGraph extends Component {
 
     if (this.state.months == null || this.state.months.length == 0) return;
 
+    // if (this.state.months.length <= this.limitMonthsToShowValue) return;
+
     let minAmount = d3.array.min(this.state.months, (d) => {return d.amount});
     let maxAmount = d3.array.max(this.state.months, (d) => {return d.amount});
 
@@ -143,7 +155,13 @@ export default class ExpensesPerMonthGraph extends Component {
    * Defines the label for the value
    */
   valueLabel(value) {
-    return value.toFixed(0);
+
+    if (value == null) return '';
+
+    if (this.state.maxMonths <= this.limitMonthsToShowValue)
+      return Math.round(value,0).toLocaleString('it');
+
+    return '';
   }
 
   /**
@@ -158,6 +176,8 @@ export default class ExpensesPerMonthGraph extends Component {
     let month = this.state.months[value];
     let parsedMonth = moment(month.yearMonth + '01', 'YYYYMMDD');
 
+    if (this.state.maxMonths <= this.limitMonthsToShowValue) return parsedMonth.format('MMM YY');
+
     // Add only one month out of three
     let label;
     if (this.lastMonthLabeled != null && value == 0) this.lastMonthLabeled = null;
@@ -171,10 +191,41 @@ export default class ExpensesPerMonthGraph extends Component {
   }
 
   /**
+   * Opens the settings dialog
+   */
+  showSettings() {
+
+    this.maxMonths = this.state.maxMonths;
+
+    this.setState({modalVisible: true});
+
+  }
+
+  /**
+   * When changing the settings of the number of months
+   */
+  onMonthProspSettingChange(num) {
+    this.maxMonths = num;
+  }
+
+  /**
+   * Updates the graph settings
+   */
+  updateSettings() {
+
+    // TODO Call the App expenses API
+
+    // Update the max months
+    this.setState({maxMonths: this.maxMonths}, this.loadExpenses);
+
+  }
+
+  /**
    * Render the comp
    */
   render() {
 
+    // Message if there is no data
     let message = this.state.loaded && (this.state.months == null || this.state.months.length == 0) ? (
       <TotoStaticMessage
         image={require('TotoReactExpenses/img/statistics.png')}
@@ -183,19 +234,55 @@ export default class ExpensesPerMonthGraph extends Component {
         />
     ) : null;
 
+    // Settings button
+    let settings = this.state.loaded && this.state.months != null && this.state.months.length > 0 ? (
+      <View style={{alignItems: 'flex-end', paddingHorizontal: 12,}}>
+        <TRC.TotoIconButton
+          image={require('TotoReactExpenses/img/settings.png')}
+          size='ms'
+          onPress={this.showSettings}
+          />
+      </View>
+    ) : null;
+
     return (
       <View style={styles.container}>
         {message}
+        {settings}
         <TotoLineChart
           data={this.state.preparedData}
           showValuePoints={true}
           valuePointsSize={3}
           curveCardinal={true}
-          leaveMargins={false}
+          leaveMargins={true}
           yLines={this.state.yLines}
+          yLinesNumberLocale='it'
           xAxisTransform={this.xAxisTransform}
           moreSpaceForXLabels={true}
+          valueLabelTransform={this.valueLabel}
           />
+
+        <Modal  animationType="slide" transparent={false} visible={this.state.modalVisible}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalTitleContainer}>
+              <Text style={styles.modalTitle}>You can change the number of months to look at here!</Text>
+            </View>
+            <View style={styles.sliderContainer}>
+              <Measurement
+                  title='Months'
+                  minValue={6}
+                  maxValue={40}
+                  onValueChange={this.onMonthProspSettingChange}
+                  increment={1}
+                  initialValue={this.maxMonths}
+                  />
+            </View>
+            <View style={styles.buttonsContainer}>
+              <TRC.TotoIconButton image={require('../../img/tick.png')} onPress={() => {this.updateSettings(); this.setState({modalVisible: false})}} />
+              <TRC.TotoIconButton image={require('../../img/cross.png')} onPress={() => {this.setState({modalVisible: false})}} />
+            </View>
+          </View>
+        </Modal>
       </View>
     )
   }
@@ -204,5 +291,33 @@ export default class ExpensesPerMonthGraph extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  modalContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: TRC.TotoTheme.theme.COLOR_THEME_DARK,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 64,
+  },
+  sliderContainer: {
+  },
+  buttonsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginBottom: 24,
+  },
+  modalTitleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    marginBottom: 24,
+  },
+  modalTitle: {
+    fontSize: 18,
+    color: TRC.TotoTheme.theme.COLOR_THEME_LIGHT,
+    textAlign: 'center',
   },
 })
