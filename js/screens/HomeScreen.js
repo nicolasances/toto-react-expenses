@@ -10,6 +10,7 @@ import LastDaysSpendingGraph from 'TotoReactExpenses/js/graph/LastDaysSpendingGr
 import MonthSpendingBubble from 'TotoReactExpenses/js/comp/MonthSpendingBubble';
 import MonthSpendingCategoriesGraph from 'TotoReactExpenses/js/graph/MonthSpendingCategoriesGraph';
 import ExpensesPerMonthGraph from 'TotoReactExpenses/js/graph/ExpensesPerMonthGraph';
+import ExpensesPerYearGraph from 'TotoReactExpenses/js/graph/ExpensesPerYearGraph';
 import TopSpendingCategoriesPerMonth from 'TotoReactExpenses/js/graph/TopSpendingCategoriesPerMonth';
 
 const windowHeight = Dimensions.get('window').height;
@@ -118,6 +119,7 @@ export default class HomeScreen extends Component<Props> {
           <Swiper style={{}} showsPagination={false}>
             <MonthSpendingCategoriesGraph />
             <ExpensesPerMonthGraph />
+            <ExpensesPerYearGraph />
             <TopSpendingCategoriesPerMonth />
           </Swiper>
         </View>

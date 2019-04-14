@@ -143,6 +143,18 @@ export default class ExpensesAPI {
   }
 
   /**
+   * Retrieves the spending (total) for each year
+   */
+  getExpensesPerYear(userEmail, targetCurrency) {
+
+    let targetCurrencyFilter = targetCurrency ? '&targetCurrency=' + targetCurrency : ''
+
+    return new TotoAPI().fetch('/expenses/stats/expensesPerYear?user=' + userEmail + targetCurrencyFilter)
+        .then((response) => response.json());
+
+  }
+
+  /**
    * Retrieves the spending categories for the specified month
    */
   getTopSpendingCategoriesOfMonth(userEmail, yearMonth, maxCategories, targetCurrency) {
