@@ -14,8 +14,8 @@ export default class YesNoToggle extends Component {
         super(props);
 
         this.state = {
-            yes: false,
-            no: false
+            yes: props.value != null && props.value,
+            no: props.value != null && !props.value
         }
 
         this.onPressYes = this.onPressYes.bind(this);

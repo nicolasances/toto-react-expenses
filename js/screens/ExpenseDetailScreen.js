@@ -190,7 +190,7 @@ export default class ExpenseDetailScreen extends Component<Props> {
           </View>
 
           <View style={styles.line4}>
-            <YesNoToggle label="Monthly payment" onSelectionChange={this.setMonthlyPayment}/>
+            <YesNoToggle label="Monthly payment" onSelectionChange={this.setMonthlyPayment} value={this.state.expense.monthly}/>
           </View>
 
           <View style={{flex: 1}}>
