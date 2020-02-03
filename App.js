@@ -77,7 +77,8 @@ export default class App extends Component {
         }, () => {
           result().then((r) => {
             // Update the global user
-            user.setUserInfo(r.user);
+            if (r) user.setUserInfo(r.user);
+            else this.setState({isSignedIn: false})
             // Update the "loaded" state
             this.checkLoadedState();
           });

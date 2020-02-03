@@ -9,6 +9,7 @@ import CurrencySelector from 'TotoReactExpenses/js/comp/CurrencySelector';
 import AmountSelector from 'TotoReactExpenses/js/comp/AmountSelector';
 import CategorySelector from 'TotoReactExpenses/js/comp/CategorySelector';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
+import YesNoToggle from 'TotoReactExpenses/js/comp/YesNoToggle';
 
 export default class ExpenseDetailScreen extends Component<Props> {
 
@@ -43,6 +44,7 @@ export default class ExpenseDetailScreen extends Component<Props> {
     this.setCategory = this.setCategory.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
     this.saveExpense = this.saveExpense.bind(this);
+    this.setMonthlyPayment = this.setMonthlyPayment.bind(this);
 
   }
 
@@ -128,6 +130,18 @@ export default class ExpenseDetailScreen extends Component<Props> {
     this.setState({expense: {...this.state.expense, category: c}});
   }
 
+  /**
+   * Sets the monthly payment attribute
+   * @param {string} yesOrNo 
+   */
+  setMonthlyPayment(yesOrNo) {
+
+    this.setState({
+      expense: {...this.state.expense, monthly: yesOrNo == 'yes' ? true : false}
+    })
+
+  }
+
 
   /**
    * Renders the home screen
@@ -175,10 +189,14 @@ export default class ExpenseDetailScreen extends Component<Props> {
             <CategorySelector category={this.state.expense.category} onCategoryChange={this.setCategory} />
           </View>
 
+          <View style={styles.line4}>
+            <YesNoToggle label="Monthly payment" onSelectionChange={this.setMonthlyPayment}/>
+          </View>
+
           <View style={{flex: 1}}>
           </View>
 
-          <View style={styles.line4}>
+          <View style={styles.line5}>
             <TRC.TotoIconButton image={require('TotoReactExpenses/img/tick.png')} onPress={this.saveExpense} />
             <TRC.TotoIconButton image={require('TotoReactExpenses/img/trash.png')} onPress={this.deleteExpense} />
           </View>
@@ -233,9 +251,14 @@ const styles = StyleSheet.create({
   },
   line3: {
     alignItems: 'center',
-    marginVertical: 24,
+    marginVertical: 12,
   },
   line4: {
+    flexDirection: 'row',
+    marginHorizontal: 12,
+    marginTop: 24
+  },
+  line5: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 24,

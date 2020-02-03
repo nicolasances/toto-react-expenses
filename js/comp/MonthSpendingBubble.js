@@ -28,6 +28,7 @@ class MonthSpendingBubble extends Component {
     this.load = this.load.bind(this);
     this.animate = this.animate.bind(this);
     this.onExpenseCreated = this.onExpenseCreated.bind(this);
+    this.onExpenseDeleted = this.onExpenseDeleted.bind(this);
   }
 
   /**
@@ -39,7 +40,7 @@ class MonthSpendingBubble extends Component {
 
     // Add event listeners
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
-    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseDeleted, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseDeleted, this.onExpenseDeleted);
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.expenseUpdated, this.onExpenseCreated);
     TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.settingsUpdated, this.load);
 
@@ -48,7 +49,7 @@ class MonthSpendingBubble extends Component {
   componentWillUnmount() {
     // REmove event listeners
     TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseCreated, this.onExpenseCreated);
-    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseDeleted, this.onExpenseCreated);
+    TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseDeleted, this.onExpenseDeleted);
     TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.expenseUpdated, this.onExpenseCreated);
     TRC.TotoEventBus.bus.unsubscribeToEvent(config.EVENTS.settingsUpdated, this.load);
   }
@@ -66,6 +67,7 @@ class MonthSpendingBubble extends Component {
 
   // React to events
   onExpenseCreated(event) {this.loadSpending();}
+  onExpenseDeleted(event) {this.loadSpending();}
 
   /**
    * Loads the current month spending
