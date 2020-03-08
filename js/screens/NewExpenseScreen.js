@@ -10,6 +10,7 @@ import AmountSelector from 'TotoReactExpenses/js/comp/AmountSelector';
 import CategorySelector from 'TotoReactExpenses/js/comp/CategorySelector';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import user from 'TotoReactExpenses/js/User';
+import ErbohAPI from 'TotoReactExpenses/js/services/ErbohAPI';
 
 export default class NewExpenseScreen extends Component<Props> {
 
