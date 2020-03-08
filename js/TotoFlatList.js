@@ -25,7 +25,9 @@ import moment from 'moment';
  *                                              { type: 'date'
  *                                                value: the value. If 'date' => 'YYYYMMDD'
  *                                              }
- *                              rightSideValue: a formatted value to put on the right-most side of the line (e.g. amount in an expenses list)
+ *                              rightSideValue: a formatted value to put on the right-most side of the line (e.g. amount in an expenses list), 
+ *                              leftSideSign :  an image to put as a "sign" (e.g. info sign to show that this item has info attached)
+ *                                              should be a loaded image, (provided as require(..), so already loaded)
  *                            }
  *  - onItemPress()         : a function to be called when the item is pressed
  *  - avatarImageLoader()   : a function(item) that will have to load the avatar image and return a loaded <Image />
@@ -139,6 +141,19 @@ class Item extends Component {
       )
     }
 
+    // If there is a left sign
+    let leftSign;
+
+    if (data.leftSign) {
+      let signSizeStyle = {width: 24, height: 24};
+
+      leftSign = (
+        <View style={styles.signContainer}>
+          <Image source={data.leftSign} style={[styles.sign, signSizeStyle]} />
+        </View>
+      )
+    }
+
     // Left side value
     let leftSideValue;
     if (data.leftSideValue) {
@@ -158,6 +173,8 @@ class Item extends Component {
         </View>
 
         {leftSideValue}
+
+        {leftSign}
 
         <View style={styles.textContainer}>
           <Text style={{color: TRC.TotoTheme.theme.COLOR_TEXT}}>{data.title}</Text>

@@ -14,6 +14,7 @@ import user from 'TotoReactExpenses/js/User';
 const windowHeight = Dimensions.get('window').height;
 
 const consolidateImg = require('TotoReactExpenses/img/consolidate.png');
+const monthlyImg = require('TotoReactExpenses/img/periodic.png');
 
 export default class ExpensesListScreen extends Component<Props> {
 
@@ -148,6 +149,7 @@ export default class ExpensesListScreen extends Component<Props> {
       },
       rightSideValue: amount,
       sign: ex.consolidated ? null : consolidateImg,
+      leftSign: ex.monthly ? monthlyImg : null,
       signSize: 'xl',
       onSignClick: ex.consolidated ? null : this.consolidateExpense
     }
