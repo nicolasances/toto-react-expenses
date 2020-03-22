@@ -139,8 +139,6 @@ export default class MonthSpendingCategoriesGraph extends Component {
    */
   render() {
 
-    console.log(this.state.loaded);
-
     let message = this.state.loaded && (this.state.categories == null || this.state.categories.length == 0) ? (
       <TotoStaticMessage
         image={require('TotoReactExpenses/img/statistics.png')}

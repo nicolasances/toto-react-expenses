@@ -11,6 +11,7 @@ import CategorySelector from 'TotoReactExpenses/js/comp/CategorySelector';
 import ExpensesAPI from 'TotoReactExpenses/js/services/ExpensesAPI';
 import user from 'TotoReactExpenses/js/User';
 import ErbohAPI from 'TotoReactExpenses/js/services/ErbohAPI';
+import ERCBOD from 'TotoReactExpenses/js/services/ERCBOD';
 
 export default class NewExpenseScreen extends Component<Props> {
 
@@ -46,6 +47,8 @@ export default class NewExpenseScreen extends Component<Props> {
     this.setAmount = this.setAmount.bind(this);
     this.setCategory = this.setCategory.bind(this);
     this.saveExpense = this.saveExpense.bind(this);
+    this.setDescription = this.setDescription.bind(this);
+    this.predictCategory = this.predictCategory.bind(this);
 
   }
 
@@ -53,6 +56,9 @@ export default class NewExpenseScreen extends Component<Props> {
    * When the component mount
    */
   componentDidMount() {
+
+    this.descriptionChangeTimer = null;
+
     // Add event listeners
     // TRC.TotoEventBus.bus.subscribeToEvent(config.EVENTS.sessionDeleted, this.onSessionDeleted);
 
@@ -127,6 +133,34 @@ export default class NewExpenseScreen extends Component<Props> {
     this.setState({category: c});
   }
 
+  predictCategory() {
+
+    // Guess the category
+    new ERCBOD().predictCategory(this.state.description, user.userInfo.email).then((data) => {
+
+      this.setState({category: data.category});
+      
+    })
+
+  }
+
+  /**
+   * Sets the descripton
+   */
+  setDescription(text) {
+
+    // We're setting a timeout after which, if the user hasn't typed any other letter,  the category prediction will start
+    // Clear the timeout: the user has typed another letter!
+    clearTimeout(this.descriptionChangeTimer)
+
+    // Change the state
+    this.setState({description: text})
+    
+    // Start the timeout
+    this.descriptionChangeTimer = setTimeout(this.predictCategory, 400)
+
+  }
+
 
   /**
    * Renders the home screen
@@ -170,7 +204,7 @@ export default class NewExpenseScreen extends Component<Props> {
           <View style={styles.line2}>
             <TextInput
               style={styles.descriptionInput}
-              onChangeText={(text) => {this.setState({description: text})}}
+              onChangeText={this.setDescription}
               placeholder='Expense description here...'
               placeholderTextColor={TRC.TotoTheme.theme.COLOR_THEME_LIGHT}
               keyboardType='default'
