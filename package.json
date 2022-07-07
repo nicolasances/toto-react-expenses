@@ -10,7 +10,7 @@
   "dependencies": {
     "art": "^0.10.3",
     "d3": "^5.9.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "16.8.3",
     "react-native": "0.59.2",
     "react-native-coverflow": "^0.1.7",
